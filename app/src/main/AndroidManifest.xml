@@ -22,10 +22,6 @@
             android:label="Select Equalizer">
         </activity>
         <activity
-            android:name=".PlaylistRootSelect"
-            android:label="Select Music Folder">
-        </activity>
-        <activity
             android:name=".ExternalMemorySelect"
             android:label="Select Music Folder">
         </activity>
