@@ -24,14 +24,15 @@ public class MainScreen extends Activity {
 
     public static final String REPEAT_KEY = "REPEATKEY";
     public static final String SHUFFLE_KEY = "SHUFFLEKEY";
-    public ArrayList<HashMap<String,String>> songList=ExternalMemorySelect.getSongList();
     private int songIndex;
     MediaPlayer mp = null;
+    public ArrayList<HashMap<String,String>> songList=PresetRepeatShuffleHandler.songList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
         setContentView(R.layout.main_screen);
         setRepeatImg();
         setShuffleImg();
@@ -85,10 +86,9 @@ public class MainScreen extends Activity {
             initializeMediaPlayer();
             try{
                 mp.reset();
-                mp.setDataSource(getSelectedFilePath(songIndex) + "/" + getSelectedFilePath(songIndex));
+                mp.setDataSource(getSelectedFilePath(songIndex) + "/" + getSelectedFileName(songIndex));
                 mp.prepare();
                 mp.start();
-
             }catch (Exception e) {
                 e.printStackTrace();
             }
