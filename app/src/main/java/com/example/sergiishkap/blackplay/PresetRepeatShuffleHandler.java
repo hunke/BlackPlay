@@ -1,5 +1,7 @@
 package com.example.sergiishkap.blackplay;
 
+import android.media.MediaPlayer;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -11,6 +13,16 @@ public class PresetRepeatShuffleHandler {
     public static boolean isShuffleOn;
     public static String preset;
 
+    public static MediaPlayer getMp() {
+        return mp;
+    }
+
+    public static MediaPlayer setMp(MediaPlayer mp) {
+        PresetRepeatShuffleHandler.mp = mp;
+        return mp;
+    }
+
+    public static MediaPlayer mp;
     public static boolean isIsRepeatOn() {
         return isRepeatOn;
     }

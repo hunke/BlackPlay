@@ -24,9 +24,29 @@ public class MainScreen extends Activity {
 
     public static final String REPEAT_KEY = "REPEATKEY";
     public static final String SHUFFLE_KEY = "SHUFFLEKEY";
-    private int songIndex;
-    MediaPlayer mp;
     public ArrayList<HashMap<String,String>> songList=PresetRepeatShuffleHandler.songList;
+    MediaPlayer mp=PresetRepeatShuffleHandler.getMp();
+
+    public int getCurrentSongPosition() {
+        return currentSongPosition;
+    }
+
+    public void setCurrentSongPosition(int currentSongPosition) {
+        this.currentSongPosition = currentSongPosition;
+    }
+
+    private int currentSongPosition;
+
+    public int getSongIndex() {
+        return songIndex;
+    }
+
+    public void setSongIndex(int songIndex) {
+        this.songIndex = songIndex;
+    }
+
+    private int songIndex;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,9 +58,13 @@ public class MainScreen extends Activity {
         setTrackImg();
         getPreset();
         Intent intent=getIntent();
-        int songPosition=intent.getIntExtra("songIndex",0);
-        songIndex=songPosition;
+        int songPosition=intent.getIntExtra("songIndex",99999999);
+        setSongIndex(songPosition);
+        changePlayState();
+        setCurrentSongPosition(songPosition);
     }
+
+
     public String getSelectedFileName(int i){
         String filename=songList.get(i).get("fileName");
         return filename;
@@ -82,28 +106,53 @@ public class MainScreen extends Activity {
     }
     public void changePlayState(){
         if(mp==null){
-            initializeMediaPlayer();
-            try{
+            if(getSongIndex()==99999999){
+
+            }
+            else{
+                initializeMediaPlayer();
+                try{
+                    setPlayImg(true);
+                    mp.reset();
+                    mp.setDataSource(getSelectedFilePath(getSongIndex()) + "/" + getSelectedFileName(getSongIndex()));
+                    mp.prepare();
+                    mp.start();
+                }catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }else if(getCurrentSongPosition()==getSongIndex()){
+            if(mp.isPlaying()){
+                setPlayImg(false);
+                mp.pause();
+            }else {
+                mp.start();
+                setPlayImg(true);
+            }
+        }else{
+            try {
+                setPlayImg(true);
                 mp.reset();
-                mp.setDataSource(getSelectedFilePath(songIndex) + "/" + getSelectedFileName(songIndex));
+                mp.setDataSource(getSelectedFilePath(getSongIndex()) + "/" + getSelectedFileName(getSongIndex()));
                 mp.prepare();
                 mp.start();
-            }catch (Exception e) {
+            }catch (Exception e){
                 e.printStackTrace();
             }
-            setPlayImg();
-        }else if(mp.isPlaying()){
-            mp.pause();
-            setPlayImg();
-        }else {
-            mp.start();
-            setPlayImg();
+
         }
 
     }
+    public void setPlayImg(boolean playState){
+        ImageButton playBtn=(ImageButton)findViewById(R.id.play);
+        if(playState){
+            playBtn.setImageResource(R.drawable.next_track);
+        }else {
+            playBtn.setImageResource(R.drawable.play);
+        }
+    }
     public void initializeMediaPlayer(){
-        mp=new MediaPlayer();
-        mp.setScreenOnWhilePlaying(false);
+        mp=PresetRepeatShuffleHandler.setMp(new MediaPlayer());
     }
     public void setRepeatImg(){
         ImageButton repeatbtn=(ImageButton)findViewById(R.id.repeat);
