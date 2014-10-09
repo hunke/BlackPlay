@@ -46,10 +46,11 @@
             android:adjustViewBounds="true"
             android:src="@drawable/shuffle_off_img"
             />
-        <Button
+        <ImageButton
             android:id="@+id/preset"
             android:textSize="18sp"
             android:background="@null"
+            android:src="@drawable/ic_launcher"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:onClick="selectPreset"/>
@@ -118,5 +119,13 @@
     android:textColor="#fff"
     android:layout_marginTop="@dimen/activity_vertical_margin"
     />
+    <TextView
+        android:id="@+id/albumName"
+        android:layout_above="@id/artist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="40sp"
+        android:textColor="#62b1b1b1"/>
 
 </RelativeLayout>

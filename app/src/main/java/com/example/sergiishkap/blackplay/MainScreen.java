@@ -41,7 +41,7 @@ public class MainScreen extends Activity {
     MediaPlayer mp=PresetRepeatShuffleHandler.getMp();
     public static final String apiURL="http://developer.echonest.com/api/v4/artist/images?api_key=6XY1VAB7JI048NKWW&name=";
     public static final String apiURLSuffix="&format=json&results=1&start=0&license=unknown";
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +50,6 @@ public class MainScreen extends Activity {
         setRepeatImg();
         setShuffleImg();
         setTrackImg();
-        getPreset();
         Intent intent=getIntent();
         int songPosition=intent.getIntExtra("songIndex",99999999);
         PresetRepeatShuffleHandler.setSongIndex(songPosition);
@@ -102,6 +101,8 @@ public class MainScreen extends Activity {
         TextView songNameView=(TextView)findViewById(R.id.composition);
         songNameView.setText(songName);
         String albumName=retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ALBUM);
+        TextView albumText=(TextView)findViewById(R.id.albumName);
+        albumText.setText(albumName);
 
         try{
             URL obj=new URL(apiURL+httpArtist+apiURLSuffix);
@@ -188,14 +189,6 @@ public class MainScreen extends Activity {
     public void playFile(View view){
         changePlayState();
     }
-    public void getPreset(){
-        Button presetBtn=(Button)findViewById(R.id.preset);
-        if(PresetRepeatShuffleHandler.getPreset()==null){
-            PresetRepeatShuffleHandler.setPreset("Rock");
-        }
-        presetBtn.setText(PresetRepeatShuffleHandler.getPreset());
-
-    }
     public void changeShuffleState(boolean shuffleState){
         if(shuffleState){
             PresetRepeatShuffleHandler.setIsShuffleOn(false);
@@ -212,7 +205,7 @@ public class MainScreen extends Activity {
         bgImg.setImageDrawable(rightArrow);
     }
     public void selectPreset(View view){
-        Intent intent=new Intent(MainScreen.this, Presets.class);
+        Intent intent=new Intent(MainScreen.this, EQActivity.class);
         startActivity(intent);
     }
 }

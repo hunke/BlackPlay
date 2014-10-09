@@ -10,11 +10,11 @@
         android:drawSelectorOnTop="false">
     </ListView>
 
-    <TextView android:id="@id/android:empty"
+    <ImageView android:id="@id/android:empty"
         android:textSize="16sp"
         android:textStyle="bold"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:text="no Data"/>
+        android:src="@drawable/gettingawaywithmurder"/>
 
 </LinearLayout>

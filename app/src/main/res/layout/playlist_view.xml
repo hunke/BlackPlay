@@ -7,13 +7,15 @@
 
 <TextView android:id="@+id/text1"
   	android:layout_marginLeft="5sp"
-    android:textSize="16sp"
-  	android:textStyle="bold" 
+    android:paddingBottom="5sp"
+    android:paddingTop="5sp"
+    android:textSize="18sp"
+  	android:textStyle="bold"
   	android:layout_width="fill_parent"
   	android:layout_height="fill_parent"/>
 <TextView android:id="@+id/text2"
-    android:layout_marginLeft="15sp"
-  	android:textSize="12sp"         
+    android:layout_marginLeft="30sp"
+  	android:textSize="13sp"
   	android:textStyle="bold"      
   	android:layout_width="wrap_content"         
   	android:layout_height="fill_parent"/>
