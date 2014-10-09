@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -13,9 +14,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-/**
- * Created by sergii.shkap on 9/15/2014.
- */
 public class ExternalMemorySelect extends ListActivity {
     static String path=Environment.getExternalStorageDirectory().getAbsolutePath();
     final static String FILTER = "mp3";
@@ -24,6 +22,7 @@ public class ExternalMemorySelect extends ListActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.playlist_from_storage);
         SimpleAdapter adapter = new SimpleAdapter(
                 this,

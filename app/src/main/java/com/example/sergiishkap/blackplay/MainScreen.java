@@ -53,10 +53,18 @@ public class MainScreen extends Activity {
         Intent intent=getIntent();
         int songPosition=intent.getIntExtra("songIndex",99999999);
         PresetRepeatShuffleHandler.setSongIndex(songPosition);
-        changePlayState();
-        PresetRepeatShuffleHandler.setCurrentSongPosition(songPosition);
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
+        if("yes".equals(intent.getStringExtra("fromEQ"))){
+            if(PresetRepeatShuffleHandler.getCurrentSongPosition()==99999999){
+
+            }else{
+                setSongMetadata(getSelectedFilePath(PresetRepeatShuffleHandler.getCurrentSongPosition())+"/"+getSelectedFileName(PresetRepeatShuffleHandler.getCurrentSongPosition()));
+            }
+        }else{
+            changePlayState();
+            PresetRepeatShuffleHandler.setCurrentSongPosition(songPosition);
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
     }
 
 
@@ -104,16 +112,7 @@ public class MainScreen extends Activity {
         TextView albumText=(TextView)findViewById(R.id.albumName);
         albumText.setText(albumName);
 
-        try{
-            URL obj=new URL(apiURL+httpArtist+apiURLSuffix);
-            URLConnection connection=obj.openConnection();
-            String responseString=connection.getContent().toString();
-            System.out.println("ResponseString is: "+responseString);
-        }catch (ClientProtocolException e){
-            e.printStackTrace();
-        }catch (IOException ioe){
-            ioe.printStackTrace();
-        }
+
 
 
     }

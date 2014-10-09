@@ -1,23 +1,25 @@
 package com.example.sergiishkap.blackplay;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.media.audiofx.BassBoost;
 import android.media.audiofx.Equalizer;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
+import android.view.Window;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 public class EQActivity extends Activity implements SeekBar.OnSeekBarChangeListener,
         CompoundButton.OnCheckedChangeListener,
         View.OnClickListener {
     TextView bass_boost_label = null;
     SeekBar bass_boost = null;
-    CheckBox enabled = null;
+    ToggleButton enabled = null;
     ImageButton flat = null;
 
     Equalizer eq = null;
@@ -35,10 +37,11 @@ public class EQActivity extends Activity implements SeekBar.OnSeekBarChangeListe
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.eq_layout);
 
-        enabled = (CheckBox)findViewById(R.id.enabled);
-        enabled.setOnCheckedChangeListener (this);
+        enabled = (ToggleButton)findViewById(R.id.enabled);
+        enabled.setOnCheckedChangeListener(this);
 
         flat = (ImageButton)findViewById(R.id.flat);
         flat.setOnClickListener(this);
@@ -244,5 +247,10 @@ public class EQActivity extends Activity implements SeekBar.OnSeekBarChangeListe
         }
 
         updateUI();
+    }
+    public void backToMain(View view){
+        Intent intent=new Intent(EQActivity.this,MainScreen.class);
+        intent.putExtra("fromEQ", "yes");
+        startActivity(intent);
     }
 }
