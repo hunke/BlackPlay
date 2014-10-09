@@ -87,7 +87,7 @@ public class MainScreen extends Activity {
     }
     public void shuffleToggle(View view){
         changeShuffleState(PresetRepeatShuffleHandler.isShuffleOn);
-        setRepeatImg();
+        setShuffleImg();
     }
     public void changeRepeatState(boolean repeatValue){
         if (!repeatValue){
@@ -111,11 +111,7 @@ public class MainScreen extends Activity {
         String albumName=retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ALBUM);
         TextView albumText=(TextView)findViewById(R.id.albumName);
         albumText.setText(albumName);
-
-
-
-
-    }
+}
     public void changePlayState(){
         if(mp==null){
             if(PresetRepeatShuffleHandler.getSongIndex()==99999999){
@@ -184,7 +180,32 @@ public class MainScreen extends Activity {
             shuffleBtn.setImageResource(R.drawable.shuffle_off_img);
         }
     }
+    public void nextSong(View view){
+        int songListSize=songList.size();
+        ImageButton nextTrack=(ImageButton)findViewById(R.id.next_track);
+        if(PresetRepeatShuffleHandler.getCurrentSongPosition()<songListSize-1){
+            PresetRepeatShuffleHandler.setSongIndex(PresetRepeatShuffleHandler.getCurrentSongPosition()+1);
+        }else{
+            PresetRepeatShuffleHandler.setSongIndex(0);
+        }
+        if(mp!=null){
+            try {
+                mp.reset();
+                String fileLoc=getSelectedFilePath(PresetRepeatShuffleHandler.getSongIndex()) + "/" + getSelectedFileName(PresetRepeatShuffleHandler.getSongIndex());
+                mp.setDataSource(fileLoc);
+                mp.prepare();
+                mp.start();
+                setSongMetadata(fileLoc);
+                setPlayImg(true);
+                PresetRepeatShuffleHandler.setCurrentSongPosition(PresetRepeatShuffleHandler.getSongIndex());
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        else {
 
+        }
+    }
     public void playFile(View view){
         changePlayState();
     }

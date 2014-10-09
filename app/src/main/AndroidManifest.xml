@@ -9,7 +9,7 @@
         android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/gettingawaywithmurder"
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
         >
@@ -33,5 +33,6 @@
             android:label="Select Music Folder"
             android:screenOrientation="portrait">
         </activity>
+        <activity android:name=".Splash"></activity>
     </application>
 </manifest>
