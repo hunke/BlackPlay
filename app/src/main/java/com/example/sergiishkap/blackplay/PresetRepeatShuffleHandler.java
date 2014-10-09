@@ -47,5 +47,23 @@ public class PresetRepeatShuffleHandler {
     public static void setPreset(String preset) {
         PresetRepeatShuffleHandler.preset = preset;
     }
+    public static int getCurrentSongPosition() {
+        return currentSongPosition;
+    }
 
+    public static void setCurrentSongPosition(int currentSongPosition1) {
+        currentSongPosition = currentSongPosition1;
+    }
+
+    public static int currentSongPosition;
+
+    public static int getSongIndex() {
+        return songIndex;
+    }
+
+    public static void setSongIndex(int songIndex1) {
+        songIndex = songIndex1;
+    }
+
+    public static int songIndex;
 }

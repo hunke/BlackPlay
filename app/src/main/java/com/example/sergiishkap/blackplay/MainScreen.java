@@ -2,20 +2,33 @@ package com.example.sergiishkap.blackplay;
 
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
+import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
+import android.os.StrictMode;
+import android.provider.MediaStore;
 import android.view.View;
 import android.view.Window;
+import android.webkit.WebResourceResponse;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.content.Intent;
+import android.widget.TextView;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.w3c.dom.Text;
+
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -26,28 +39,9 @@ public class MainScreen extends Activity {
     public static final String SHUFFLE_KEY = "SHUFFLEKEY";
     public ArrayList<HashMap<String,String>> songList=PresetRepeatShuffleHandler.songList;
     MediaPlayer mp=PresetRepeatShuffleHandler.getMp();
-
-    public int getCurrentSongPosition() {
-        return currentSongPosition;
-    }
-
-    public void setCurrentSongPosition(int currentSongPosition) {
-        this.currentSongPosition = currentSongPosition;
-    }
-
-    private int currentSongPosition;
-
-    public int getSongIndex() {
-        return songIndex;
-    }
-
-    public void setSongIndex(int songIndex) {
-        this.songIndex = songIndex;
-    }
-
-    private int songIndex;
-
-
+    public static final String apiURL="http://developer.echonest.com/api/v4/artist/images?api_key=6XY1VAB7JI048NKWW&name=";
+    public static final String apiURLSuffix="&format=json&results=1&start=0&license=unknown";
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,9 +53,11 @@ public class MainScreen extends Activity {
         getPreset();
         Intent intent=getIntent();
         int songPosition=intent.getIntExtra("songIndex",99999999);
-        setSongIndex(songPosition);
+        PresetRepeatShuffleHandler.setSongIndex(songPosition);
         changePlayState();
-        setCurrentSongPosition(songPosition);
+        PresetRepeatShuffleHandler.setCurrentSongPosition(songPosition);
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
     }
 
 
@@ -72,15 +68,6 @@ public class MainScreen extends Activity {
     public String getSelectedFilePath(int i){
         String filePath=songList.get(i).get("path");
         return filePath;
-    }
-    @Override
-    protected void onPause(){
-        super.onPause();
-    }
-
-    @Override
-    protected void onStart(){
-        super.onStart();
     }
     public void buttonToPlaylist_Click(View view) {
         Intent intent = new Intent(MainScreen.this, ExternalMemorySelect.class);
@@ -104,47 +91,74 @@ public class MainScreen extends Activity {
             setRepeatImg();
         }
     }
+    public void setSongMetadata(String filePathAndFileName){
+        MediaMetadataRetriever retriever=new MediaMetadataRetriever();
+        retriever.setDataSource(filePathAndFileName);
+        String artist=retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST);
+        String httpArtist=artist.replace(" ","%20").toLowerCase();
+        String songName=retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
+        TextView artistName=(TextView)findViewById(R.id.artist);
+        artistName.setText(artist);
+        TextView songNameView=(TextView)findViewById(R.id.composition);
+        songNameView.setText(songName);
+        String albumName=retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ALBUM);
+
+        try{
+            URL obj=new URL(apiURL+httpArtist+apiURLSuffix);
+            URLConnection connection=obj.openConnection();
+            String responseString=connection.getContent().toString();
+            System.out.println("ResponseString is: "+responseString);
+        }catch (ClientProtocolException e){
+            e.printStackTrace();
+        }catch (IOException ioe){
+            ioe.printStackTrace();
+        }
+
+
+    }
     public void changePlayState(){
         if(mp==null){
-            if(getSongIndex()==99999999){
+            if(PresetRepeatShuffleHandler.getSongIndex()==99999999){
 
             }
             else{
                 initializeMediaPlayer();
                 try{
-                    setPlayImg(true);
+                    String fileLoc=getSelectedFilePath(PresetRepeatShuffleHandler.getSongIndex()) + "/" + getSelectedFileName(PresetRepeatShuffleHandler.getSongIndex());
                     mp.reset();
-                    mp.setDataSource(getSelectedFilePath(getSongIndex()) + "/" + getSelectedFileName(getSongIndex()));
+                    mp.setDataSource(fileLoc);
                     mp.prepare();
                     mp.start();
+                    setSongMetadata(fileLoc);
+                    setPlayImg(true);
                 }catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-        }else if(getCurrentSongPosition()==getSongIndex()){
+        }else if(PresetRepeatShuffleHandler.getCurrentSongPosition()==PresetRepeatShuffleHandler.getSongIndex()){
             if(mp.isPlaying()){
-                setPlayImg(false);
                 mp.pause();
+                setPlayImg(false);
             }else {
                 mp.start();
                 setPlayImg(true);
             }
         }else{
             try {
-                setPlayImg(true);
                 mp.reset();
-                mp.setDataSource(getSelectedFilePath(getSongIndex()) + "/" + getSelectedFileName(getSongIndex()));
+                String fileLoc=getSelectedFilePath(PresetRepeatShuffleHandler.getSongIndex()) + "/" + getSelectedFileName(PresetRepeatShuffleHandler.getSongIndex());
+                mp.setDataSource(fileLoc);
                 mp.prepare();
                 mp.start();
+                setSongMetadata(fileLoc);
+                setPlayImg(true);
             }catch (Exception e){
                 e.printStackTrace();
             }
-
         }
-
     }
     public void setPlayImg(boolean playState){
-        ImageButton playBtn=(ImageButton)findViewById(R.id.play);
+        ImageButton playBtn=(ImageButton)findViewById(R.id.play_btn);
         if(playState){
             playBtn.setImageResource(R.drawable.next_track);
         }else {
@@ -170,14 +184,7 @@ public class MainScreen extends Activity {
             shuffleBtn.setImageResource(R.drawable.shuffle_off_img);
         }
     }
-    public void setPlayImg(){
-        ImageButton playBtn=(ImageButton)findViewById(R.id.play);
-        if(mp.isPlaying()){
-            playBtn.setImageResource(R.drawable.next_track);
-        }else {
-            playBtn.setImageResource(R.drawable.play);
-        }
-    }
+
     public void playFile(View view){
         changePlayState();
     }

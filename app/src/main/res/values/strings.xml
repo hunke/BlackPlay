@@ -2,7 +2,6 @@
 <resources>
 
     <string name="app_name">BlackPlay</string>
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="to_play_list">\u003c</string>
     <string-array name="preset_list">
@@ -13,9 +12,5 @@
         <item>Techno</item>
         <item>Live</item>
         <item>Line</item>
-    </string-array>
-    <string-array name="root_playlist_options">
-        <item>All music</item>
-        <item>Specify Folder</item>
     </string-array>
 </resources>

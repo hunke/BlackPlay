@@ -22,12 +22,10 @@
             android:id="@+id/to_playlist"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
-            android:textSize="@dimen/artist_text_font_size"
+            android:textSize="26sp"
             android:text="@string/to_play_list"
             android:onClick="buttonToPlaylist_Click"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            />
         <ImageButton
             android:background="@null"
             android:id="@+id/repeat"
@@ -37,9 +35,7 @@
             android:scaleType="fitCenter"
             android:adjustViewBounds="true"
             android:onClick="repeatToggle"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/to_playlist"
-            android:layout_alignBottom="@+id/to_playlist" />
+            />
         <ImageButton
             android:background="@null"
             android:id="@+id/shuffle"
@@ -49,10 +45,10 @@
             android:scaleType="fitCenter"
             android:adjustViewBounds="true"
             android:src="@drawable/shuffle_off_img"
-            android:layout_alignBottom="@+id/repeat" />
+            />
         <Button
             android:id="@+id/preset"
-            android:textSize="@dimen/topbar_text_font_size"
+            android:textSize="18sp"
             android:background="@null"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
@@ -73,7 +69,7 @@
         android:adjustViewBounds="true"
         />
     <ImageButton
-        android:id="@+id/play"
+        android:id="@+id/play_btn"
         android:background="@null"
         android:layout_margin="@dimen/activity_vertical_margin"
         android:layout_width="130dp"
@@ -102,16 +98,15 @@
         android:id="@+id/track_progress"
         android:layout_width="fill_parent"
         android:layout_height="30dp"
-        android:layout_above="@id/play"/>
+        android:layout_above="@id/play_btn"/>
     <TextView
     android:id="@+id/composition"
     android:layout_marginRight="@dimen/activity_horizontal_margin"
     android:layout_alignParentRight="true"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:text="Getting away with murder"
     android:textColor="#fff"
-    android:textSize="@dimen/composition_text_font_size"
+    android:textSize="22sp"
     android:layout_above="@id/track_progress"/>
     <TextView
     android:layout_marginLeft="@dimen/activity_horizontal_margin"
@@ -119,9 +114,9 @@
     android:layout_above="@id/composition"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:textSize="@dimen/artist_text_font_size"
+    android:textSize="26sp"
     android:textColor="#fff"
     android:layout_marginTop="@dimen/activity_vertical_margin"
-    android:text="Papa Roach"/>
+    />
 
 </RelativeLayout>

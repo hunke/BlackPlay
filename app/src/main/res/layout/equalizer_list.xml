@@ -7,7 +7,7 @@
         android:id="@+id/presets"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/artist_text_font_size"
+        android:textSize="26sp"
         android:layout_margin="@dimen/activity_vertical_margin"
         />
 </LinearLayout>
