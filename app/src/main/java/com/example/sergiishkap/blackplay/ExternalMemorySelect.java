@@ -46,6 +46,15 @@ public class ExternalMemorySelect extends ListActivity {
         fillPlayList(rootDir);
         return list;
     }
+
+    public static ArrayList<HashMap<String, String>> getList() {
+        return list;
+    }
+
+    public static void setList(ArrayList<HashMap<String, String>> list) {
+        ExternalMemorySelect.list = list;
+    }
+
     public static ArrayList<HashMap<String,String>> list = new ArrayList<HashMap<String,String>>();
 
     public static void fillPlayList(File parentDir){

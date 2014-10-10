@@ -3,7 +3,9 @@ package com.example.sergiishkap.blackplay;
 import android.media.MediaPlayer;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Random;
 
 /**
  * Created by sergii.shkap on 9/15/2014.
@@ -11,7 +13,6 @@ import java.util.HashMap;
 public class PresetRepeatShuffleHandler {
     public static boolean isRepeatOn;
     public static boolean isShuffleOn;
-    public static String preset;
 
     public static MediaPlayer getMp() {
         return mp;
@@ -27,7 +28,6 @@ public class PresetRepeatShuffleHandler {
         return isRepeatOn;
     }
     public static ArrayList<HashMap<String,String>> songList=ExternalMemorySelect.getSongList();
-
     public static void setIsRepeatOn(boolean isRepeatOn) {
         PresetRepeatShuffleHandler.isRepeatOn = isRepeatOn;
     }
@@ -38,14 +38,6 @@ public class PresetRepeatShuffleHandler {
 
     public static void setIsShuffleOn(boolean isShuffleOn) {
         PresetRepeatShuffleHandler.isShuffleOn = isShuffleOn;
-    }
-
-    public static String getPreset() {
-        return preset;
-    }
-
-    public static void setPreset(String preset) {
-        PresetRepeatShuffleHandler.preset = preset;
     }
     public static int getCurrentSongPosition() {
         return currentSongPosition;

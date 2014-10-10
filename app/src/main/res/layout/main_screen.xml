@@ -68,6 +68,7 @@
         android:src="@drawable/previous_track"
         android:scaleType="fitCenter"
         android:adjustViewBounds="true"
+        android:onClick="previousSong"
         />
     <ImageButton
         android:id="@+id/play_btn"

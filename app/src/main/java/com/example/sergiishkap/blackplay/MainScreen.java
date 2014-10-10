@@ -5,39 +5,27 @@ import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.provider.MediaStore;
 import android.view.View;
 import android.view.Window;
-import android.webkit.WebResourceResponse;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.content.Intent;
 import android.widget.TextView;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.w3c.dom.Text;
-
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Random;
 
 
-public class MainScreen extends Activity {
+public class MainScreen extends Activity implements MediaPlayer.OnCompletionListener {
 
-    public static final String REPEAT_KEY = "REPEATKEY";
-    public static final String SHUFFLE_KEY = "SHUFFLEKEY";
     public ArrayList<HashMap<String,String>> songList=PresetRepeatShuffleHandler.songList;
+    public void randoMizeSongList(ArrayList<HashMap<String,String>> randomizedSongList){
+        long seed=System.nanoTime();
+        Collections.shuffle(randomizedSongList,new Random(seed));
+    }
     MediaPlayer mp=PresetRepeatShuffleHandler.getMp();
     public static final String apiURL="http://developer.echonest.com/api/v4/artist/images?api_key=6XY1VAB7JI048NKWW&name=";
     public static final String apiURLSuffix="&format=json&results=1&start=0&license=unknown";
@@ -66,7 +54,12 @@ public class MainScreen extends Activity {
             StrictMode.setThreadPolicy(policy);
         }
     }
-
+    @Override
+    public void onCompletion(MediaPlayer mp) {
+        System.out.println("Completed");
+        playNextSong();
+        System.out.println("Should be triggered");
+    }
 
     public String getSelectedFileName(int i){
         String filename=songList.get(i).get("fileName");
@@ -101,16 +94,28 @@ public class MainScreen extends Activity {
     public void setSongMetadata(String filePathAndFileName){
         MediaMetadataRetriever retriever=new MediaMetadataRetriever();
         retriever.setDataSource(filePathAndFileName);
-        String artist=retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST);
-        String httpArtist=artist.replace(" ","%20").toLowerCase();
-        String songName=retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
         TextView artistName=(TextView)findViewById(R.id.artist);
-        artistName.setText(artist);
         TextView songNameView=(TextView)findViewById(R.id.composition);
-        songNameView.setText(songName);
-        String albumName=retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ALBUM);
         TextView albumText=(TextView)findViewById(R.id.albumName);
-        albumText.setText(albumName);
+        String artist=retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST);
+        if(artist==null||artist==""){
+            artistName.setText(getSelectedFileName(PresetRepeatShuffleHandler.getSongIndex()));
+        }else{
+            String httpArtist=artist.replace(" ","%20").toLowerCase();
+            artistName.setText(artist);
+        }
+        String songName=retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
+        if(songName==null||songName==""){
+            songNameView.setText(getSelectedFilePath(PresetRepeatShuffleHandler.getSongIndex()));
+        }else{
+            songNameView.setText(songName);
+        }
+        String albumName=retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ALBUM);
+        if(albumName==null||albumName==""){
+            albumText.setText("");
+        }else {
+            albumText.setText(albumName);
+        }
 }
     public void changePlayState(){
         if(mp==null){
@@ -135,23 +140,39 @@ public class MainScreen extends Activity {
             if(mp.isPlaying()){
                 mp.pause();
                 setPlayImg(false);
+                String fileLoc=getSelectedFilePath(PresetRepeatShuffleHandler.getSongIndex()) + "/" + getSelectedFileName(PresetRepeatShuffleHandler.getSongIndex());
+                setSongMetadata(fileLoc);
             }else {
                 mp.start();
                 setPlayImg(true);
             }
-        }else{
-            try {
-                mp.reset();
-                String fileLoc=getSelectedFilePath(PresetRepeatShuffleHandler.getSongIndex()) + "/" + getSelectedFileName(PresetRepeatShuffleHandler.getSongIndex());
-                mp.setDataSource(fileLoc);
-                mp.prepare();
-                mp.start();
-                setSongMetadata(fileLoc);
-                setPlayImg(true);
-            }catch (Exception e){
-                e.printStackTrace();
-            }
+        }else if(PresetRepeatShuffleHandler.getSongIndex()==99999999){
+            resetSongMeta();
+            setPlayImg(false);
+            mp.reset();
         }
+        else{
+                try {
+                    mp.reset();
+                    String fileLoc=getSelectedFilePath(PresetRepeatShuffleHandler.getSongIndex()) + "/" + getSelectedFileName(PresetRepeatShuffleHandler.getSongIndex());
+                    mp.setDataSource(fileLoc);
+                    mp.prepare();
+                    mp.start();
+                    setSongMetadata(fileLoc);
+                    setPlayImg(true);
+                    PresetRepeatShuffleHandler.setCurrentSongPosition(PresetRepeatShuffleHandler.getSongIndex());
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+        }
+    }
+    public void resetSongMeta(){
+        TextView artistName=(TextView)findViewById(R.id.artist);
+        TextView songNameView=(TextView)findViewById(R.id.composition);
+        TextView albumText=(TextView)findViewById(R.id.albumName);
+        artistName.setText("");
+        songNameView.setText("");
+        albumText.setText("");
     }
     public void setPlayImg(boolean playState){
         ImageButton playBtn=(ImageButton)findViewById(R.id.play_btn);
@@ -180,32 +201,54 @@ public class MainScreen extends Activity {
             shuffleBtn.setImageResource(R.drawable.shuffle_off_img);
         }
     }
-    public void nextSong(View view){
+    public void playNextSong(){
         int songListSize=songList.size();
         ImageButton nextTrack=(ImageButton)findViewById(R.id.next_track);
-        if(PresetRepeatShuffleHandler.getCurrentSongPosition()<songListSize-1){
-            PresetRepeatShuffleHandler.setSongIndex(PresetRepeatShuffleHandler.getCurrentSongPosition()+1);
-        }else{
-            PresetRepeatShuffleHandler.setSongIndex(0);
-        }
         if(mp!=null){
-            try {
-                mp.reset();
-                String fileLoc=getSelectedFilePath(PresetRepeatShuffleHandler.getSongIndex()) + "/" + getSelectedFileName(PresetRepeatShuffleHandler.getSongIndex());
-                mp.setDataSource(fileLoc);
-                mp.prepare();
-                mp.start();
-                setSongMetadata(fileLoc);
-                setPlayImg(true);
-                PresetRepeatShuffleHandler.setCurrentSongPosition(PresetRepeatShuffleHandler.getSongIndex());
-            }catch (Exception e){
-                e.printStackTrace();
+            if(!PresetRepeatShuffleHandler.isIsRepeatOn()&&PresetRepeatShuffleHandler.getCurrentSongPosition()==songListSize-1){
+                PresetRepeatShuffleHandler.setSongIndex(99999999);
             }
-        }
-        else {
+            else if(PresetRepeatShuffleHandler.isIsRepeatOn()&&PresetRepeatShuffleHandler.getCurrentSongPosition()==songListSize-1){
+                PresetRepeatShuffleHandler.setSongIndex(0);
+            }
+            else{
+                PresetRepeatShuffleHandler.setSongIndex(PresetRepeatShuffleHandler.getCurrentSongPosition()+1);
+            }
+            changePlayState();
+        }else {
 
         }
     }
+    public void nextSong(View view){
+        playNextSong();
+    }
+    public void playPreviousSong(){
+        int songListSize=songList.size();
+        ImageButton previousTrack=(ImageButton)findViewById(R.id.previous_track);
+        int index= PresetRepeatShuffleHandler.getSongIndex();
+        if(mp!=null){
+            if(index==99999999){
+
+            }
+            else if(PresetRepeatShuffleHandler.isIsRepeatOn()&&index==0){
+                PresetRepeatShuffleHandler.setSongIndex(songListSize - 1);
+            }
+            else if(index==0){
+                mp.reset();
+                setPlayImg(false);
+            }
+            else{
+                PresetRepeatShuffleHandler.setSongIndex(index-1);
+            }
+            changePlayState();
+        }else {
+
+        }
+    }
+    public void previousSong(View view){
+        playPreviousSong();
+    }
+
     public void playFile(View view){
         changePlayState();
     }
@@ -213,9 +256,13 @@ public class MainScreen extends Activity {
         if(shuffleState){
             PresetRepeatShuffleHandler.setIsShuffleOn(false);
             setShuffleImg();
+            songList.clear();
+            songList=ExternalMemorySelect.getSongList();
         }else {
             PresetRepeatShuffleHandler.setIsShuffleOn(true);
             setShuffleImg();
+            songList=PresetRepeatShuffleHandler.songList;
+            randoMizeSongList(songList);
         }
     }
     public void setTrackImg(){
