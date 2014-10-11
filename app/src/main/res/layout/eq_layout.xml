@@ -8,31 +8,19 @@
     android:paddingRight="20dp"
     >
 
-<LinearLayout
+<RelativeLayout
     android:orientation="horizontal"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="60dp"
     >
 <Button
     android:layout_width="60dp"
     android:layout_height="60dp"
     android:background="@null"
     android:text="@string/to_play_list"
+    android:textSize="26sp"
     android:onClick="backToMain"
     />
-    <View
-        android:layout_width="0dp"
-        android:layout_height="fill_parent"
-        android:layout_weight="1"
-        />
-    <ToggleButton
-        android:id="@+id/enabled"
-        android:layout_marginLeft="60dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@null"
-        />
-
 <ImageButton android:id="@+id/flat"
     android:background="@null"
      android:layout_height="60dp"
@@ -40,9 +28,18 @@
      android:src="@drawable/repeat_on_img"
      android:scaleType="fitCenter"
      android:adjustViewBounds="true"
+    android:layout_alignParentRight="true"
      />
 
-</LinearLayout> 
+    <ToggleButton
+        android:id="@+id/enabled"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:background="@null"
+        android:layout_toLeftOf="@id/flat"
+        />
+
+</RelativeLayout>
 
 <TextView  
     android:id="@+id/bass_boost_label"

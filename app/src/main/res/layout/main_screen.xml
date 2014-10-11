@@ -13,7 +13,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         />
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="70dp">
 
@@ -35,6 +35,7 @@
             android:scaleType="fitCenter"
             android:adjustViewBounds="true"
             android:onClick="repeatToggle"
+            android:layout_toRightOf="@id/to_playlist"
             />
         <ImageButton
             android:background="@null"
@@ -44,18 +45,22 @@
             android:layout_height="fill_parent"
             android:scaleType="fitCenter"
             android:adjustViewBounds="true"
+            android:layout_toRightOf="@id/repeat"
             android:src="@drawable/shuffle_off_img"
             />
         <ImageButton
             android:id="@+id/preset"
-            android:textSize="18sp"
             android:background="@null"
-            android:src="@drawable/ic_launcher"
-            android:layout_width="fill_parent"
+            android:src="@drawable/eq_img"
+            android:layout_width="75dp"
             android:layout_height="fill_parent"
-            android:onClick="selectPreset"/>
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
+            android:onClick="selectPreset"
+            android:layout_alignParentRight="true"
+            />
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <ImageButton
         android:id="@+id/previous_track"

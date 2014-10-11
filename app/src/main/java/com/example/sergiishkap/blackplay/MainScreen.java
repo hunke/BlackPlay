@@ -177,7 +177,7 @@ public class MainScreen extends Activity implements MediaPlayer.OnCompletionList
     public void setPlayImg(boolean playState){
         ImageButton playBtn=(ImageButton)findViewById(R.id.play_btn);
         if(playState){
-            playBtn.setImageResource(R.drawable.next_track);
+            playBtn.setImageResource(R.drawable.pause);
         }else {
             playBtn.setImageResource(R.drawable.play);
         }
