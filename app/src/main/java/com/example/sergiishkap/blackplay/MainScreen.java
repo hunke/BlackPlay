@@ -53,14 +53,8 @@ public class MainScreen extends Activity implements MediaPlayer.OnCompletionList
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
-    }
-    @Override
-    public void onCompletion(MediaPlayer mp) {
-        System.out.println("Completed");
-        playNextSong();
-        System.out.println("Should be triggered");
-    }
 
+    }
     public String getSelectedFileName(int i){
         String filename=songList.get(i).get("fileName");
         return filename;
@@ -117,6 +111,10 @@ public class MainScreen extends Activity implements MediaPlayer.OnCompletionList
             albumText.setText(albumName);
         }
 }
+    public void onCompletion(MediaPlayer arg0) {
+        System.out.println("onComplete Triggered");
+        playNextSong();
+    }
     public void changePlayState(){
         if(mp==null){
             if(PresetRepeatShuffleHandler.getSongIndex()==99999999){
@@ -132,6 +130,7 @@ public class MainScreen extends Activity implements MediaPlayer.OnCompletionList
                     mp.start();
                     setSongMetadata(fileLoc);
                     setPlayImg(true);
+                    mp.setOnCompletionListener(this);
                 }catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -161,6 +160,7 @@ public class MainScreen extends Activity implements MediaPlayer.OnCompletionList
                     setSongMetadata(fileLoc);
                     setPlayImg(true);
                     PresetRepeatShuffleHandler.setCurrentSongPosition(PresetRepeatShuffleHandler.getSongIndex());
+                    mp.setOnCompletionListener(this);
                 }catch (Exception e){
                     e.printStackTrace();
                 }
