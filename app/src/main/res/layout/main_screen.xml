@@ -9,7 +9,7 @@
     tools:context=".MyActivity">
     <ImageView
         android:id="@+id/album_bg"
-        android:src="@drawable/gettingawaywithmurder"
+
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         />
@@ -133,6 +133,6 @@
         android:layout_height="wrap_content"
         android:text=""
         android:textSize="40sp"
-        android:textColor="#62b1b1b1"/>
+        android:textColor="#7cb1b1b1"/>
 
 </RelativeLayout>
