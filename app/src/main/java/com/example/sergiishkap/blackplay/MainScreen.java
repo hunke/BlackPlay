@@ -2,7 +2,11 @@ package com.example.sergiishkap.blackplay;
 
 
 import android.app.Activity;
+import android.app.KeyguardManager;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.ServiceConnection;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -10,6 +14,9 @@ import android.graphics.drawable.Drawable;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.os.Message;
+import android.os.Messenger;
 import android.os.PowerManager;
 import android.os.StrictMode;
 import android.util.Log;
@@ -26,19 +33,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.logging.Handler;
 
 
-public class MainScreen extends Activity implements MediaPlayer.OnCompletionListener {
+public class MainScreen extends Activity{
 
-    public ArrayList<HashMap<String,String>> songList=PresetRepeatShuffleHandler.songList;
-    public void randoMizeSongList(ArrayList<HashMap<String,String>> randomizedSongList){
-        long seed=System.nanoTime();
-        Collections.shuffle(randomizedSongList,new Random(seed));
-    }
-    MediaPlayer mp=PresetRepeatShuffleHandler.getMp();
     public static final String apiURL="http://developer.echonest.com/api/v4/artist/images?api_key=6XY1VAB7JI048NKWW&name=";
     public static final String apiURLSuffix="&format=json&results=1&start=0&license=unknown";
 
+    Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,41 +50,14 @@ public class MainScreen extends Activity implements MediaPlayer.OnCompletionList
         setContentView(R.layout.main_screen);
         setRepeatImg();
         setShuffleImg();
+        if(!PresetRepeatShuffleHandler.isServiceStarted()){
+            Intent service= new Intent(this,PlayerService.class);
+            startService(service);
+        }
         Intent intent=getIntent();
-        int songPosition=intent.getIntExtra("songIndex",99999999);
+        int songPosition=intent.getIntExtra("songIndex",Constants.NO_SONG_SELECTED);
         PresetRepeatShuffleHandler.setSongIndex(songPosition);
-        if("yes".equals(intent.getStringExtra("fromEQ"))){
-            setSongMetadata(getSelectedFilePath(PresetRepeatShuffleHandler.getCurrentSongPosition())+"/"+getSelectedFileName(PresetRepeatShuffleHandler.getCurrentSongPosition()));
-            if(mp!=null&&mp.isPlaying()){
-                setPlayImg(true);
-            }
-        }else{
-            changePlayState();
-            PresetRepeatShuffleHandler.setCurrentSongPosition(songPosition);
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-            StrictMode.setThreadPolicy(policy);
-        }
-        if(PresetRepeatShuffleHandler.getCurrentSongPosition()==99999999){
-            setDefaultAlbumImage();
-        }
-    }
-    @Override
-    public boolean onKeyLongPress(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)
-        {
-            playPreviousSong();
-            System.out.println("Success!");
-            return true;
-        }
-        return super.onKeyLongPress(keyCode, event);
-    }
-    public String getSelectedFileName(int i){
-        String filename=songList.get(i).get("fileName");
-        return filename;
-    }
-    public String getSelectedFilePath(int i){
-        String filePath=songList.get(i).get("path");
-        return filePath;
+
     }
     public void buttonToPlaylist_Click(View view) {
         Intent intent = new Intent(MainScreen.this, ExternalMemorySelect.class);
@@ -89,23 +65,35 @@ public class MainScreen extends Activity implements MediaPlayer.OnCompletionList
     }
 
     public void repeatToggle(View view){
-        changeRepeatState(PresetRepeatShuffleHandler.isRepeatOn);
+        Intent service = new Intent(MainScreen.this,PlayerService.class);
+        service.putExtra(Constants.ACTION,Constants.REPEAT);
         setRepeatImg();
     }
     public void shuffleToggle(View view){
-        changeShuffleState(PresetRepeatShuffleHandler.isShuffleOn);
         setShuffleImg();
     }
-
-    public void changeRepeatState(boolean repeatValue){
-        if (!repeatValue){
-            PresetRepeatShuffleHandler.setIsRepeatOn(true);
-            setRepeatImg();
-        }else {
-            PresetRepeatShuffleHandler.setIsRepeatOn(false);
-            setRepeatImg();
-        }
+    public void nextSong(View view){
+        intent=new Intent(this,PlayerService.class);
+        intent.putExtra(Constants.ACTION, Constants.NEXT_SONG);
+        startService(intent);
     }
+    public void previousSong(View view){
+        intent=new Intent(this,PlayerService.class);
+        intent.putExtra(Constants.ACTION, Constants.PREVIOUS_SONG);
+        startService(intent);
+    }
+
+    public void playFile(View view){
+        intent=new Intent(this,PlayerService.class);
+        intent.putExtra(Constants.ACTION,Constants.PLAY_PAUSE);
+        startService(intent);
+    }
+
+    public void selectPreset(View view){
+        Intent intent=new Intent(MainScreen.this, EQActivity.class);
+        startActivity(intent);
+    }
+
     public void setSongMetadata(String filePathAndFileName){
         MediaMetadataRetriever retriever=new MediaMetadataRetriever();
         retriever.setDataSource(filePathAndFileName);
@@ -115,16 +103,13 @@ public class MainScreen extends Activity implements MediaPlayer.OnCompletionList
         String artist=retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST);
 
         byte [] data= retriever.getEmbeddedPicture();
-        if(artist==null||artist==""){
-            artistName.setText(getSelectedFileName(PresetRepeatShuffleHandler.getSongIndex()));
-        }else{
-            String httpArtist=artist.replace(" ","%20").toLowerCase();
+        if(artist!=null&&artist!=""){
             artistName.setText(artist);
+        }else{
+            artistName.setText(PresetRepeatShuffleHandler.getSongPathAndName());
         }
         String songName=retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
-        if(songName==null||songName==""){
-            songNameView.setText(getSelectedFilePath(PresetRepeatShuffleHandler.getSongIndex()));
-        }else{
+        if(songName!=null&&songName!=""){
             songNameView.setText(songName);
         }
         String albumName=retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ALBUM);
@@ -146,59 +131,8 @@ public class MainScreen extends Activity implements MediaPlayer.OnCompletionList
             setDefaultAlbumImage();
         }
 }
-    public void onCompletion(MediaPlayer arg0) {
-        playNextSong();
-    }
     public void changePlayState(){
-        if(mp==null){
-            if(PresetRepeatShuffleHandler.getSongIndex()==99999999){
 
-            }
-            else{
-                initializeMediaPlayer();
-                try{
-                    String fileLoc=getSelectedFilePath(PresetRepeatShuffleHandler.getSongIndex()) + "/" + getSelectedFileName(PresetRepeatShuffleHandler.getSongIndex());
-                    mp.reset();
-                    mp.setDataSource(fileLoc);
-                    mp.prepare();
-                    mp.start();
-                    setSongMetadata(fileLoc);
-                    setPlayImg(true);
-                    mp.setOnCompletionListener(this);
-                }catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }else if(PresetRepeatShuffleHandler.getCurrentSongPosition()==PresetRepeatShuffleHandler.getSongIndex()){
-            if(mp.isPlaying()){
-                mp.pause();
-                setPlayImg(false);
-                String fileLoc=getSelectedFilePath(PresetRepeatShuffleHandler.getSongIndex()) + "/" + getSelectedFileName(PresetRepeatShuffleHandler.getSongIndex());
-                setSongMetadata(fileLoc);
-            }else {
-                mp.start();
-                setPlayImg(true);
-            }
-        }else if(PresetRepeatShuffleHandler.getSongIndex()==99999999){
-            resetSongMeta();
-            setPlayImg(false);
-            mp.reset();
-        }
-        else{
-                try {
-                    mp.reset();
-                    String fileLoc=getSelectedFilePath(PresetRepeatShuffleHandler.getSongIndex()) + "/" + getSelectedFileName(PresetRepeatShuffleHandler.getSongIndex());
-                    mp.setDataSource(fileLoc);
-                    mp.prepare();
-                    mp.start();
-                    setSongMetadata(fileLoc);
-                    setPlayImg(true);
-                    PresetRepeatShuffleHandler.setCurrentSongPosition(PresetRepeatShuffleHandler.getSongIndex());
-                    mp.setOnCompletionListener(this);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-        }
     }
     public void resetSongMeta(){
         TextView artistName=(TextView)findViewById(R.id.artist);
@@ -208,16 +142,13 @@ public class MainScreen extends Activity implements MediaPlayer.OnCompletionList
         songNameView.setText("");
         albumText.setText("");
     }
-    public void setPlayImg(boolean playState){
+    public void setPlayImg(){
         ImageButton playBtn=(ImageButton)findViewById(R.id.play_btn);
-        if(playState){
+        if(PresetRepeatShuffleHandler.isMpPlaying()){
             playBtn.setImageResource(R.drawable.pause);
         }else {
             playBtn.setImageResource(R.drawable.play);
         }
-    }
-    public void initializeMediaPlayer(){
-        mp=PresetRepeatShuffleHandler.setMp(new MediaPlayer());
     }
     public void setRepeatImg(){
         ImageButton repeatbtn=(ImageButton)findViewById(R.id.repeat);
@@ -241,74 +172,4 @@ public class MainScreen extends Activity implements MediaPlayer.OnCompletionList
         rightArrow.setAlpha(50);
         bgImg.setImageDrawable(rightArrow);
     }
-    public void playNextSong(){
-        int songListSize=songList.size();
-        ImageButton nextTrack=(ImageButton)findViewById(R.id.next_track);
-        if(mp!=null){
-            if(!PresetRepeatShuffleHandler.isIsRepeatOn()&&PresetRepeatShuffleHandler.getCurrentSongPosition()==songListSize-1){
-                PresetRepeatShuffleHandler.setSongIndex(99999999);
-            }
-            else if(PresetRepeatShuffleHandler.isIsRepeatOn()&&PresetRepeatShuffleHandler.getCurrentSongPosition()==songListSize-1){
-                PresetRepeatShuffleHandler.setSongIndex(0);
-            }
-            else{
-                PresetRepeatShuffleHandler.setSongIndex(PresetRepeatShuffleHandler.getCurrentSongPosition()+1);
-            }
-            changePlayState();
-        }else {
-
-        }
-    }
-    public void nextSong(View view){
-        playNextSong();
-    }
-    public void playPreviousSong(){
-        int songListSize=songList.size();
-        ImageButton previousTrack=(ImageButton)findViewById(R.id.previous_track);
-        int index= PresetRepeatShuffleHandler.getSongIndex();
-        if(mp!=null){
-            if(index==99999999){
-
-            }
-            else if(PresetRepeatShuffleHandler.isIsRepeatOn()&&index==0){
-                PresetRepeatShuffleHandler.setSongIndex(songListSize - 1);
-            }
-            else if(!PresetRepeatShuffleHandler.isIsRepeatOn()&&index==0){
-                mp.reset();
-                setPlayImg(false);
-            }
-            else{
-                PresetRepeatShuffleHandler.setSongIndex(index-1);
-            }
-            changePlayState();
-        }else {
-
-        }
-    }
-    public void previousSong(View view){
-        playPreviousSong();
-    }
-
-    public void playFile(View view){
-        changePlayState();
-    }
-    public void changeShuffleState(boolean shuffleState){
-        if(shuffleState){
-            PresetRepeatShuffleHandler.setIsShuffleOn(false);
-            setShuffleImg();
-            songList.clear();
-            songList=ExternalMemorySelect.getSongList();
-        }else {
-            PresetRepeatShuffleHandler.setIsShuffleOn(true);
-            setShuffleImg();
-            songList=PresetRepeatShuffleHandler.songList;
-            randoMizeSongList(songList);
-        }
-    }
-
-    public void selectPreset(View view){
-        Intent intent=new Intent(MainScreen.this, EQActivity.class);
-        startActivity(intent);
-    }
-
 }

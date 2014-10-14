@@ -13,6 +13,33 @@ import java.util.Random;
 public class PresetRepeatShuffleHandler {
     public static boolean isRepeatOn;
     public static boolean isShuffleOn;
+    public static boolean isServiceStarted() {
+        return serviceStarted;
+    }
+
+    public static String getSongPathAndName() {
+        return songPathAndName;
+    }
+
+    public static void setSongPathAndName(String songPathAndName) {
+        PresetRepeatShuffleHandler.songPathAndName = songPathAndName;
+    }
+
+    public static String songPathAndName;
+    public static boolean isMpPlaying() {
+        return mpPlaying;
+    }
+
+    public static void setMpPlaying(boolean mpPlaying) {
+        PresetRepeatShuffleHandler.mpPlaying = mpPlaying;
+    }
+
+    public static boolean mpPlaying;
+    public static void setServiceStarted(boolean serviceStarted) {
+        PresetRepeatShuffleHandler.serviceStarted = serviceStarted;
+    }
+
+    public static boolean serviceStarted;
 
     public static MediaPlayer getMp() {
         return mp;
