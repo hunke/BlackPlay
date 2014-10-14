@@ -2,6 +2,7 @@ package com.example.sergiishkap.blackplay;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -9,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.os.StrictMode;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -63,16 +65,16 @@ public class MainScreen extends Activity implements MediaPlayer.OnCompletionList
             setDefaultAlbumImage();
         }
     }
-
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event){
-        int repeats=event.getRepeatCount();
-        if(keyCode==KeyEvent.KEYCODE_VOLUME_UP){
-
+    public boolean onKeyLongPress(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)
+        {
+            playPreviousSong();
+            System.out.println("Success!");
+            return true;
         }
-        return super.onKeyDown(keyCode,event);
+        return super.onKeyLongPress(keyCode, event);
     }
-
     public String getSelectedFileName(int i){
         String filename=songList.get(i).get("fileName");
         return filename;
@@ -308,4 +310,5 @@ public class MainScreen extends Activity implements MediaPlayer.OnCompletionList
         Intent intent=new Intent(MainScreen.this, EQActivity.class);
         startActivity(intent);
     }
+
 }
