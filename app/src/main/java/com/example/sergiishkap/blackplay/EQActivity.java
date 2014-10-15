@@ -252,7 +252,6 @@ public class EQActivity extends Activity implements SeekBar.OnSeekBarChangeListe
     public void backToMain(View view){
         Intent intent=new Intent(EQActivity.this,MainScreen.class);
         intent.putExtra("fromEQ", "yes");
-        intent.putExtra("songIndex",presetRepeatShuffleHandler.getSongIndex());
         startActivity(intent);
     }
 }

@@ -16,5 +16,10 @@ public class Constants {
     public static final int NO_SONG_SELECTED=99999999;
     public static final String SELECTED_FROM_PLAYLIST="fromPlayList";
     public static final boolean FROM_PLAYLIST =true;
+    public static final int SONG_META_CHANGED=20;
+    public static final int SONG_INDEX_CHANGED=21;
+    public static final int REPEAT_STATE_CHANGED=22;
+    public static final int SHUFFLE_STATE_CHANGED=23;
+    public static final int PLAY_STATE_CHANGED=24;
 
 }

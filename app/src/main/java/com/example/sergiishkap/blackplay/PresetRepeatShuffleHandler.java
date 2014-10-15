@@ -3,15 +3,10 @@ package com.example.sergiishkap.blackplay;
 import android.media.MediaPlayer;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Observable;
-import java.util.Random;
 
-/**
- * Created by sergii.shkap on 9/15/2014.
- */
-public class PresetRepeatShuffleHandler {
+public class PresetRepeatShuffleHandler extends Observable{
     private static PresetRepeatShuffleHandler instance=null;
     public static PresetRepeatShuffleHandler getInstance(){
         if(instance==null){
@@ -19,9 +14,7 @@ public class PresetRepeatShuffleHandler {
         }
         return instance;
     }
-    protected PresetRepeatShuffleHandler() {
-        // Exists only to defeat instantiation.
-    }
+
     private boolean isRepeatOn;
     public boolean isShuffleOn;
     public boolean isServiceStarted() {
@@ -34,6 +27,7 @@ public class PresetRepeatShuffleHandler {
 
     public void setSongPathAndName(String songPathAndName1) {
         songPathAndName = songPathAndName1;
+        triggerObservers(Constants.SONG_META_CHANGED);
     }
 
     public String songPathAndName;
@@ -43,6 +37,7 @@ public class PresetRepeatShuffleHandler {
 
     public void setMpPlaying(boolean mpPlaying1) {
         mpPlaying = mpPlaying1;
+        triggerObservers(Constants.PLAY_STATE_CHANGED);
     }
 
     private boolean mpPlaying;
@@ -68,14 +63,19 @@ public class PresetRepeatShuffleHandler {
     public ArrayList<HashMap<String,String>> songList=ExternalMemorySelect.getSongList();
     public void setIsRepeatOn(boolean isRepeatOn1) {
         isRepeatOn = isRepeatOn1;
+        triggerObservers(Constants.REPEAT_STATE_CHANGED);
     }
 
     public boolean isIsShuffleOn() {
         return isShuffleOn;
     }
-
+    private void triggerObservers(int action) {
+        setChanged();
+        notifyObservers(action);
+    }
     public void setIsShuffleOn(boolean isShuffleOn1) {
         isShuffleOn = isShuffleOn1;
+        triggerObservers(Constants.SHUFFLE_STATE_CHANGED);
     }
     public int getCurrentSongPosition() {
         return currentSongPosition;
@@ -85,15 +85,6 @@ public class PresetRepeatShuffleHandler {
         currentSongPosition = currentSongPosition1;
     }
 
-    public boolean isPlayerInitialized() {
-        return playerInitialized;
-    }
-
-    public void setPlayerInitialized(boolean playerInitialized1) {
-        playerInitialized = playerInitialized1;
-    }
-
-    public boolean playerInitialized;
     public int currentSongPosition;
 
     public int getSongIndex() {
@@ -102,6 +93,7 @@ public class PresetRepeatShuffleHandler {
 
     public void setSongIndex(int songIndex1) {
         songIndex = songIndex1;
+        triggerObservers(Constants.SONG_INDEX_CHANGED);
     }
 
     public int songIndex;
