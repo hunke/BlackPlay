@@ -40,9 +40,9 @@ public class MainScreen extends Activity{
 
     public static final String apiURL="http://developer.echonest.com/api/v4/artist/images?api_key=6XY1VAB7JI048NKWW&name=";
     public static final String apiURLSuffix="&format=json&results=1&start=0&license=unknown";
+    PresetRepeatShuffleHandler presetRepeatShuffleHandler=PresetRepeatShuffleHandler.getInstance();
 
     Intent intent;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,13 +50,13 @@ public class MainScreen extends Activity{
         setContentView(R.layout.main_screen);
         setRepeatImg();
         setShuffleImg();
-        if(!PresetRepeatShuffleHandler.isServiceStarted()){
+        if(!presetRepeatShuffleHandler.isServiceStarted()){
             Intent service= new Intent(this,PlayerService.class);
             startService(service);
         }
         Intent intent=getIntent();
         int songPosition=intent.getIntExtra("songIndex",Constants.NO_SONG_SELECTED);
-        PresetRepeatShuffleHandler.setSongIndex(songPosition);
+        presetRepeatShuffleHandler.setSongIndex(songPosition);
 
     }
     public void buttonToPlaylist_Click(View view) {
@@ -67,26 +67,33 @@ public class MainScreen extends Activity{
     public void repeatToggle(View view){
         Intent service = new Intent(MainScreen.this,PlayerService.class);
         service.putExtra(Constants.ACTION,Constants.REPEAT);
+        startService(service);
         setRepeatImg();
     }
     public void shuffleToggle(View view){
+        Intent service=new Intent(MainScreen.this,PlayerService.class);
+        service.putExtra(Constants.ACTION,Constants.SHUFFLE);
+        startService(service);
         setShuffleImg();
     }
     public void nextSong(View view){
         intent=new Intent(this,PlayerService.class);
         intent.putExtra(Constants.ACTION, Constants.NEXT_SONG);
         startService(intent);
+        setPlayImg();
     }
     public void previousSong(View view){
-        intent=new Intent(this,PlayerService.class);
-        intent.putExtra(Constants.ACTION, Constants.PREVIOUS_SONG);
-        startService(intent);
+        Intent service=new Intent(this,PlayerService.class);
+        service.putExtra(Constants.ACTION, Constants.PREVIOUS_SONG);
+        startService(service);
+        setPlayImg();
     }
 
     public void playFile(View view){
         intent=new Intent(this,PlayerService.class);
         intent.putExtra(Constants.ACTION,Constants.PLAY_PAUSE);
         startService(intent);
+        setPlayImg();
     }
 
     public void selectPreset(View view){
@@ -106,7 +113,7 @@ public class MainScreen extends Activity{
         if(artist!=null&&artist!=""){
             artistName.setText(artist);
         }else{
-            artistName.setText(PresetRepeatShuffleHandler.getSongPathAndName());
+            artistName.setText(presetRepeatShuffleHandler.getSongPathAndName());
         }
         String songName=retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
         if(songName!=null&&songName!=""){
@@ -131,9 +138,7 @@ public class MainScreen extends Activity{
             setDefaultAlbumImage();
         }
 }
-    public void changePlayState(){
 
-    }
     public void resetSongMeta(){
         TextView artistName=(TextView)findViewById(R.id.artist);
         TextView songNameView=(TextView)findViewById(R.id.composition);
@@ -144,15 +149,16 @@ public class MainScreen extends Activity{
     }
     public void setPlayImg(){
         ImageButton playBtn=(ImageButton)findViewById(R.id.play_btn);
-        if(PresetRepeatShuffleHandler.isMpPlaying()){
+        if(presetRepeatShuffleHandler.isMpPlaying()){
             playBtn.setImageResource(R.drawable.pause);
         }else {
             playBtn.setImageResource(R.drawable.play);
         }
+
     }
     public void setRepeatImg(){
         ImageButton repeatbtn=(ImageButton)findViewById(R.id.repeat);
-        if(PresetRepeatShuffleHandler.isIsRepeatOn()){
+        if(presetRepeatShuffleHandler.isIsRepeatOn()){
             repeatbtn.setImageResource(R.drawable.repeat_on_img);
         }else {
             repeatbtn.setImageResource(R.drawable.repeat_off_img);
@@ -160,7 +166,7 @@ public class MainScreen extends Activity{
     }
     public void setShuffleImg(){
         ImageButton shuffleBtn=(ImageButton)findViewById(R.id.shuffle);
-        if(PresetRepeatShuffleHandler.isIsShuffleOn()){
+        if(presetRepeatShuffleHandler.isIsShuffleOn()){
             shuffleBtn.setImageResource(R.drawable.shuffle_on_img);
         }else {
             shuffleBtn.setImageResource(R.drawable.shuffle_off_img);

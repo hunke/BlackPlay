@@ -17,6 +17,7 @@ import android.widget.ToggleButton;
 public class EQActivity extends Activity implements SeekBar.OnSeekBarChangeListener,
         CompoundButton.OnCheckedChangeListener,
         View.OnClickListener {
+    PresetRepeatShuffleHandler presetRepeatShuffleHandler=PresetRepeatShuffleHandler.getInstance();
     TextView bass_boost_label = null;
     SeekBar bass_boost = null;
     ToggleButton enabled = null;
@@ -251,7 +252,7 @@ public class EQActivity extends Activity implements SeekBar.OnSeekBarChangeListe
     public void backToMain(View view){
         Intent intent=new Intent(EQActivity.this,MainScreen.class);
         intent.putExtra("fromEQ", "yes");
-        intent.putExtra("songIndex",PresetRepeatShuffleHandler.getSongIndex());
+        intent.putExtra("songIndex",presetRepeatShuffleHandler.getSongIndex());
         startActivity(intent);
     }
 }

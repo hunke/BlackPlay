@@ -38,6 +38,7 @@ public class ExternalMemorySelect extends ListActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 Intent service=new Intent(ExternalMemorySelect.this,PlayerService.class);
                 service.putExtra(Constants.SONG_INDEX,position);
+                service.putExtra(Constants.SELECTED_FROM_PLAYLIST,Constants.FROM_PLAYLIST);
                 startService(service);
                 Intent intent=new Intent(ExternalMemorySelect.this,MainScreen.class);
                 intent.putExtra("songIndex",position);

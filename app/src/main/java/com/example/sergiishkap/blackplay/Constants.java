@@ -14,5 +14,7 @@ public class Constants {
     public static final String ACTION="action";
     public static final String SONG_INDEX="songIndex";
     public static final int NO_SONG_SELECTED=99999999;
+    public static final String SELECTED_FROM_PLAYLIST="fromPlayList";
+    public static final boolean FROM_PLAYLIST =true;
 
 }
