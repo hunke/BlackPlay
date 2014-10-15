@@ -2,25 +2,12 @@ package com.example.sergiishkap.blackplay;
 
 
 import android.app.Activity;
-import android.app.KeyguardManager;
-import android.content.BroadcastReceiver;
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.IntentFilter;
-import android.content.ServiceConnection;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.MediaMetadataRetriever;
-import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.IBinder;
-import android.os.Message;
-import android.os.Messenger;
-import android.os.PowerManager;
-import android.os.StrictMode;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
@@ -28,15 +15,9 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.content.Intent;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.Random;
-import java.util.logging.Handler;
 
 
 public class MainScreen extends Activity implements Observer{
@@ -217,7 +198,7 @@ public class MainScreen extends Activity implements Observer{
     }
     public void setDefaultAlbumImage(){
         ImageView bgImg=(ImageView)findViewById(R.id.album_bg);
-        Drawable rightArrow = getResources().getDrawable(R.drawable.logo);
+        Drawable rightArrow = getResources().getDrawable(R.drawable.logo_combo);
         rightArrow.setAlpha(50);
         bgImg.setImageDrawable(rightArrow);
     }
