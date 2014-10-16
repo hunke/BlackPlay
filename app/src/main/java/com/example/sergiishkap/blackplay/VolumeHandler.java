@@ -4,8 +4,10 @@ import android.content.Context;
 import android.database.ContentObserver;
 import android.media.AudioManager;
 import android.os.Handler;
+import android.os.PowerManager;
 
 public class VolumeHandler extends ContentObserver {
+    PresetRepeatShuffleHandler presetRepeatShuffleHandler=PresetRepeatShuffleHandler.getInstance();
     int previousVolume;
     Context context;
 
@@ -30,16 +32,13 @@ public class VolumeHandler extends ContentObserver {
         int currentVolume = audio.getStreamVolume(AudioManager.STREAM_MUSIC);
 
         int delta=previousVolume-currentVolume;
-
-        if(delta>0)
-        {
-           System.out.println("Decreased");
-            previousVolume=currentVolume;
-        }
-        else if(delta<0)
-        {
-            System.out.println("Increased");
-            previousVolume=currentVolume;
+        if(!presetRepeatShuffleHandler.isScreenOn()){
+            if(delta>0)
+            {
+                int ind=presetRepeatShuffleHandler.getNextSong();
+                presetRepeatShuffleHandler.setNextSong(ind+1);
+            }
+            audio.setStreamVolume(AudioManager.STREAM_MUSIC,previousVolume,0);
         }
     }
 }

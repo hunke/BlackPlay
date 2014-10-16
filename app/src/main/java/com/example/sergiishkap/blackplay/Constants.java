@@ -21,5 +21,7 @@ public class Constants {
     public static final int REPEAT_STATE_CHANGED=22;
     public static final int SHUFFLE_STATE_CHANGED=23;
     public static final int PLAY_STATE_CHANGED=24;
+    public static final int NEXT_SONG_BG=25;
+    public static final int PREVIOUS_SONG_BG=26;
 
 }

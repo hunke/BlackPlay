@@ -1,7 +1,9 @@
 package com.example.sergiishkap.blackplay;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.media.audiofx.BassBoost;
 import android.media.audiofx.Equalizer;
 import android.os.Bundle;
@@ -39,6 +41,10 @@ public class EQActivity extends Activity implements SeekBar.OnSeekBarChangeListe
     {
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_ON);
+        filter.addAction(Intent.ACTION_SCREEN_OFF);
+        BroadcastReceiver mReceiver = new ScreenReceiver();
+        registerReceiver(mReceiver, filter);
         setContentView(R.layout.eq_layout);
 
         enabled = (ToggleButton)findViewById(R.id.enabled);
@@ -137,7 +143,25 @@ public class EQActivity extends Activity implements SeekBar.OnSeekBarChangeListe
     public void onStartTrackingTouch(SeekBar seekBar)
     {
     }
+    @Override
+    protected void onPause() {
+        // WHEN THE SCREEN IS ABOUT TO TURN OFF
+        if (ScreenReceiver.isScreenOn) {
+            presetRepeatShuffleHandler.setScreenOn(false);
+        } else {
 
+        }
+        super.onPause();
+    }
+    @Override
+    protected void onResume() {
+        // ONLY WHEN SCREEN TURNS ON
+        if (!ScreenReceiver.isScreenOn) {
+            presetRepeatShuffleHandler.setScreenOn(true);
+        } else {
+        }
+        super.onResume();
+    }
     /*=============================================================================
         onStopTrackingTouch
     =============================================================================*/

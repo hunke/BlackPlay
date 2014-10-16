@@ -2,6 +2,8 @@ package com.example.sergiishkap.blackplay;
 
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -32,6 +34,10 @@ public class MainScreen extends Activity implements Observer{
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         presetRepeatShuffleHandler.addObserver(this);
+        IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_ON);
+        filter.addAction(Intent.ACTION_SCREEN_OFF);
+        BroadcastReceiver mReceiver = new ScreenReceiver();
+        registerReceiver(mReceiver, filter);
         setContentView(R.layout.main_screen);
         setRepeatImg();
         setShuffleImg();
@@ -64,9 +70,34 @@ public class MainScreen extends Activity implements Observer{
             case Constants.SONG_INDEX_CHANGED:
                 setPlayImg();
                 break;
+            case Constants.PREVIOUS_SONG_BG:
+                previousTrack();
+                break;
+            case Constants.NEXT_SONG_BG:
+                nextTrack();
+                break;
             default:
                 break;
         }
+    }
+    @Override
+    protected void onPause() {
+        // WHEN THE SCREEN IS ABOUT TO TURN OFF
+        if (ScreenReceiver.isScreenOn) {
+            presetRepeatShuffleHandler.setScreenOn(false);
+        } else {
+
+        }
+        super.onPause();
+    }
+    @Override
+    protected void onResume() {
+        // ONLY WHEN SCREEN TURNS ON
+        if (!ScreenReceiver.isScreenOn) {
+            presetRepeatShuffleHandler.setScreenOn(true);
+        } else {
+        }
+        super.onResume();
     }
     public void buttonToPlaylist_Click(View view) {
         Intent intent = new Intent(MainScreen.this, ExternalMemorySelect.class);
@@ -98,27 +129,27 @@ public class MainScreen extends Activity implements Observer{
         Intent service=new Intent(this,PlayerService.class);
         service.putExtra(Constants.ACTION, Constants.PREVIOUS_SONG);
         startService(service);
+
+    }
+    public void unloadBackground() {
+        ImageView bgimg=(ImageView)findViewById(R.id.album_bg);
+        if (bgimg != null){
+            bgimg.setImageDrawable(null);
+        }
     }
     public void playFile(View view){
         intent=new Intent(this,PlayerService.class);
         intent.putExtra(Constants.ACTION,Constants.PLAY_PAUSE);
         startService(intent);
     }
-    @Override
-    public boolean onKeyLongPress(int keycode,KeyEvent event){
-        if(keycode==KeyEvent.KEYCODE_VOLUME_DOWN){
-            System.out.println("PreviousLongP");
-            previousTrack();
-            return true;
-        }
-        return super.onKeyLongPress(keycode,event);
-    }
+
     public void selectPreset(View view){
         Intent intent=new Intent(MainScreen.this, EQActivity.class);
         startActivity(intent);
     }
 
     public void setSongMetadata(String filePathAndFileName){
+        unloadBackground();
         MediaMetadataRetriever retriever=new MediaMetadataRetriever();
         if(null==filePathAndFileName){
             resetSongMeta();
@@ -197,6 +228,7 @@ public class MainScreen extends Activity implements Observer{
         }
     }
     public void setDefaultAlbumImage(){
+        unloadBackground();
         ImageView bgImg=(ImageView)findViewById(R.id.album_bg);
         Drawable rightArrow = getResources().getDrawable(R.drawable.logo_combo);
         rightArrow.setAlpha(50);
