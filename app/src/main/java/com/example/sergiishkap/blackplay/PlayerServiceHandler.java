@@ -135,4 +135,19 @@ public class PlayerServiceHandler extends Observable{
     }
 
     public boolean headPhonesPlugged;
+
+    public boolean isOnCall() {
+        return onCall;
+    }
+
+    public void setOnCall(boolean onCall) {
+        this.onCall = onCall;
+        if(onCall){
+            triggerObservers(Constants.ON_CALL);
+        }else {
+            triggerObservers(Constants.CALL_FINISHED);
+        }
+    }
+
+    public boolean onCall;
 }

@@ -27,7 +27,8 @@ public class SystemActionsReceiver extends BroadcastReceiver {
                 default:
                     break;
             }
+        }else if(intent.getAction().equals(Intent.ACTION_NEW_OUTGOING_CALL)){
+            playerServiceHandler.setOnCall(true);
         }
-
     }
 }

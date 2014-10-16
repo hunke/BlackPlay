@@ -80,6 +80,15 @@ public class PlayerService extends IntentService implements MediaPlayer.OnComple
             case Constants.HEADPHONES_UNPLUGGED:
                 pausePlaying();
                 break;
+            case Constants.HEADPHONES_PLUGGED:
+                resumePlaying();
+                break;
+            case Constants.CALL_FINISHED:
+                resumePlaying();
+                break;
+            case Constants.ON_CALL:
+                pausePlaying();
+                break;
             default:
                 System.out.println("Doesn't work!");
                 break;
@@ -94,9 +103,11 @@ public class PlayerService extends IntentService implements MediaPlayer.OnComple
         playerServiceHandler.setMp(new MediaPlayer());
     }
     public void resumePlaying(){
-        mp.start();
-        playerServiceHandler.setMpPlaying(true);
+        if(mp!=null&&!mp.isPlaying()){
+            mp.start();
+            playerServiceHandler.setMpPlaying(true);
 
+        }
     }
     public void pausePlaying(){
         if(mp!=null){

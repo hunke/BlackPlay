@@ -82,6 +82,11 @@ public class MainScreen extends Activity implements Observer{
             case Constants.NEXT_SONG_BG:
                 nextTrack();
                 break;
+            case Constants.ON_CALL:
+                forcePause();
+                break;
+            case Constants.CALL_FINISHED:
+
             default:
                 break;
         }
@@ -104,6 +109,11 @@ public class MainScreen extends Activity implements Observer{
         } else {
         }
         super.onResume();
+    }
+    public void forceResume(){
+        Intent service=new Intent(MainScreen.this,PlayerService.class);
+        service.putExtra(Constants.ACTION,Constants.CALL_FINISHED);
+        startService(service);
     }
     public void buttonToPlaylist_Click(View view) {
         Intent intent = new Intent(MainScreen.this, ExternalMemorySelect.class);
