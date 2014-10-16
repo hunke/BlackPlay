@@ -109,25 +109,14 @@ public class PresetRepeatShuffleHandler extends Observable{
 
     public int nextSong;
 
-    public int getPreviousSong() {
-        return previousSong;
-    }
-
-    public void setPreviousSong(int previousSong) {
-        this.previousSong = previousSong;
-        triggerObservers(Constants.PREVIOUS_SONG_BG);
-    }
-
-    public int previousSong;
-
     public boolean isScreenOn() {
         return screenOn;
     }
 
     public void setScreenOn(boolean screenOn) {
         this.screenOn = screenOn;
-        System.out.println("ScreenStateChanged!");
+        System.out.println("ScreenStateChanged to:"+screenOn);
     }
 
-    public boolean screenOn;
+    public boolean screenOn=true;
 }

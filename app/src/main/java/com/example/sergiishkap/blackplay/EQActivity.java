@@ -41,10 +41,6 @@ public class EQActivity extends Activity implements SeekBar.OnSeekBarChangeListe
     {
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_ON);
-        filter.addAction(Intent.ACTION_SCREEN_OFF);
-        BroadcastReceiver mReceiver = new ScreenReceiver();
-        registerReceiver(mReceiver, filter);
         setContentView(R.layout.eq_layout);
 
         enabled = (ToggleButton)findViewById(R.id.enabled);

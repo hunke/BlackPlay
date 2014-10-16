@@ -33,12 +33,12 @@ public class VolumeHandler extends ContentObserver {
 
         int delta=previousVolume-currentVolume;
         if(!presetRepeatShuffleHandler.isScreenOn()){
-            if(delta>0)
+            if(delta<0)
             {
+                audio.setStreamVolume(AudioManager.STREAM_MUSIC,previousVolume,0);
                 int ind=presetRepeatShuffleHandler.getNextSong();
                 presetRepeatShuffleHandler.setNextSong(ind+1);
             }
-            audio.setStreamVolume(AudioManager.STREAM_MUSIC,previousVolume,0);
         }
     }
 }
