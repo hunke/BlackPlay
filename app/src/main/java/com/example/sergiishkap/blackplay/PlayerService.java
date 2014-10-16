@@ -1,17 +1,10 @@
 package com.example.sergiishkap.blackplay;
 
 import android.app.IntentService;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.database.ContentObserver;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.IBinder;
-import android.view.KeyEvent;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,7 +13,7 @@ import java.util.Random;
 
 public class PlayerService extends IntentService implements MediaPlayer.OnCompletionListener {
     VolumeHandler mSettingsContentObserver;
-    PresetRepeatShuffleHandler presetRepeatShuffleHandler=PresetRepeatShuffleHandler.getInstance();
+    PlayerServiceHandler presetRepeatShuffleHandler= PlayerServiceHandler.getInstance();
     MediaPlayer mp=presetRepeatShuffleHandler.getMp();
     public ArrayList<HashMap<String,String>> songList=presetRepeatShuffleHandler.songList;
     public void randoMizeSongList(ArrayList<HashMap<String,String>> randomizedSongList){

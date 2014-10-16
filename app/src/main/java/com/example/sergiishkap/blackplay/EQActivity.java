@@ -1,15 +1,12 @@
 package com.example.sergiishkap.blackplay;
 
 import android.app.Activity;
-import android.content.BroadcastReceiver;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.media.audiofx.BassBoost;
 import android.media.audiofx.Equalizer;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
@@ -19,7 +16,7 @@ import android.widget.ToggleButton;
 public class EQActivity extends Activity implements SeekBar.OnSeekBarChangeListener,
         CompoundButton.OnCheckedChangeListener,
         View.OnClickListener {
-    PresetRepeatShuffleHandler presetRepeatShuffleHandler=PresetRepeatShuffleHandler.getInstance();
+    PlayerServiceHandler presetRepeatShuffleHandler= PlayerServiceHandler.getInstance();
     TextView bass_boost_label = null;
     SeekBar bass_boost = null;
     ToggleButton enabled = null;

@@ -6,11 +6,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Observable;
 
-public class PresetRepeatShuffleHandler extends Observable{
-    private static PresetRepeatShuffleHandler instance=null;
-    public static PresetRepeatShuffleHandler getInstance(){
+public class PlayerServiceHandler extends Observable{
+    private static PlayerServiceHandler instance=null;
+    public static PlayerServiceHandler getInstance(){
         if(instance==null){
-            instance=new PresetRepeatShuffleHandler();
+            instance=new PlayerServiceHandler();
         }
         return instance;
     }

@@ -4,10 +4,9 @@ import android.content.Context;
 import android.database.ContentObserver;
 import android.media.AudioManager;
 import android.os.Handler;
-import android.os.PowerManager;
 
 public class VolumeHandler extends ContentObserver {
-    PresetRepeatShuffleHandler presetRepeatShuffleHandler=PresetRepeatShuffleHandler.getInstance();
+    PlayerServiceHandler presetRepeatShuffleHandler= PlayerServiceHandler.getInstance();
     int previousVolume;
     Context context;
 

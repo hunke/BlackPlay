@@ -10,7 +10,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.MediaMetadataRetriever;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageButton;
@@ -26,7 +25,7 @@ public class MainScreen extends Activity implements Observer{
 
     public static final String apiURL="http://developer.echonest.com/api/v4/artist/images?api_key=6XY1VAB7JI048NKWW&name=";
     public static final String apiURLSuffix="&format=json&results=1&start=0&license=unknown";
-    PresetRepeatShuffleHandler presetRepeatShuffleHandler=PresetRepeatShuffleHandler.getInstance();
+    PlayerServiceHandler presetRepeatShuffleHandler= PlayerServiceHandler.getInstance();
     Intent intent;
 
     @Override

@@ -1,9 +1,7 @@
 package com.example.sergiishkap.blackplay;
 
 import android.app.ListActivity;
-import android.content.BroadcastReceiver;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
@@ -18,7 +16,7 @@ import java.util.HashMap;
 
 public class ExternalMemorySelect extends ListActivity {
     static String path=Environment.getExternalStorageDirectory().getAbsolutePath();
-    PresetRepeatShuffleHandler presetRepeatShuffleHandler=PresetRepeatShuffleHandler.getInstance();
+    PlayerServiceHandler presetRepeatShuffleHandler= PlayerServiceHandler.getInstance();
     final static String FILTER = "mp3";
     static File rootDir = new File(path);
 
