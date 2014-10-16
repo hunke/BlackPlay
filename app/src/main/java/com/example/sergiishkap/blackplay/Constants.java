@@ -23,5 +23,7 @@ public class Constants {
     public static final int PLAY_STATE_CHANGED=24;
     public static final int NEXT_SONG_BG=25;
     public static final int PREVIOUS_SONG_BG=26;
+    public static final int HEADPHONES_UNPLUGGED=30;
+    public static final int HEADPHONES_PLUGGED=31;
 
 }

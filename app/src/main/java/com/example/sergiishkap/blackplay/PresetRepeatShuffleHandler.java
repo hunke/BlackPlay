@@ -119,4 +119,19 @@ public class PresetRepeatShuffleHandler extends Observable{
     }
 
     public boolean screenOn=true;
+
+    public boolean isHeadPhonesPlugged() {
+        return headPhonesPlugged;
+    }
+
+    public void setHeadPhonesPlugged(boolean headPhonesPlugged) {
+        this.headPhonesPlugged = headPhonesPlugged;
+        if(headPhonesPlugged){
+            triggerObservers(Constants.HEADPHONES_UNPLUGGED);
+        }else{
+            triggerObservers(Constants.HEADPHONES_PLUGGED);
+        }
+    }
+
+    public boolean headPhonesPlugged;
 }

@@ -84,6 +84,9 @@ public class PlayerService extends IntentService implements MediaPlayer.OnComple
                 System.out.println("ShuffleWorks!");
                 changeShuffle();
                 break;
+            case Constants.HEADPHONES_UNPLUGGED:
+                pausePlaying();
+                break;
             default:
                 System.out.println("Doesn't work!");
                 break;
@@ -103,8 +106,10 @@ public class PlayerService extends IntentService implements MediaPlayer.OnComple
 
     }
     public void pausePlaying(){
-        mp.pause();
-        presetRepeatShuffleHandler.setMpPlaying(false);
+        if(mp!=null){
+            mp.pause();
+            presetRepeatShuffleHandler.setMpPlaying(false);
+        }
     }
     public void startNewSong(int i){
         if(Constants.NO_SONG_SELECTED==i){

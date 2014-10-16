@@ -73,6 +73,11 @@ public class MainScreen extends Activity implements Observer{
             case Constants.PREVIOUS_SONG_BG:
                 previousTrack();
                 break;
+            case Constants.HEADPHONES_UNPLUGGED:
+                forcePause();
+                break;
+            case Constants.HEADPHONES_PLUGGED:
+                forcePause();
             case Constants.NEXT_SONG_BG:
                 nextTrack();
                 break;
@@ -102,6 +107,11 @@ public class MainScreen extends Activity implements Observer{
     public void buttonToPlaylist_Click(View view) {
         Intent intent = new Intent(MainScreen.this, ExternalMemorySelect.class);
         startActivity(intent);
+    }
+    public void forcePause(){
+        Intent service = new Intent(MainScreen.this,PlayerService.class);
+        service.putExtra(Constants.ACTION,Constants.HEADPHONES_UNPLUGGED);
+        startService(service);
     }
 
     public void repeatToggle(View view){
