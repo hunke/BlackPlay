@@ -39,9 +39,6 @@ public class MainScreen extends Activity implements Observer{
         filter.addAction(Intent.ACTION_SCREEN_OFF);
         BroadcastReceiver mReceiver = new SystemActionsReceiver();
         registerReceiver(mReceiver, filter);
-        if(playerServiceHandler.getVolumeIndex()==0){
-            playerServiceHandler.setVolumeIndex(5);
-        }
         setContentView(R.layout.main_screen);
         setRepeatImg();
         setShuffleImg();

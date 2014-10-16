@@ -16,6 +16,7 @@ public class VolumeHandler extends ContentObserver {
 
         AudioManager audio = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         previousVolume = audio.getStreamVolume(AudioManager.STREAM_MUSIC);
+        playerServiceHandler.setVolumeIndex(previousVolume);
     }
 
     @Override
@@ -28,15 +29,17 @@ public class VolumeHandler extends ContentObserver {
         super.onChange(selfChange);
 
         AudioManager audio = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-        int currentVolume=playerServiceHandler.getVolumeIndex();
+        int currentVolume = audio.getStreamVolume(AudioManager.STREAM_MUSIC);
 
-        int delta=previousVolume-currentVolume;
+        int delta=playerServiceHandler.getVolumeIndex()-currentVolume;
         if(!playerServiceHandler.isScreenOn()){
             if(delta>0)
             {
                 audio.setStreamVolume(AudioManager.STREAM_MUSIC,previousVolume,0);
                 int ind= playerServiceHandler.getNextSong();
                 playerServiceHandler.setNextSong(ind + 1);
+            }else {
+                playerServiceHandler.setVolumeIndex(currentVolume);
             }
         }
         else{
