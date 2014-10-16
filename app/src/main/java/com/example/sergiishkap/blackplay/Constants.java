@@ -1,8 +1,5 @@
 package com.example.sergiishkap.blackplay;
 
-/**
- * Created by sergii.shkap on 10/14/2014.
- */
 public class Constants {
     public static final int NEXT_SONG=4;
     public static final int PREVIOUS_SONG=3;

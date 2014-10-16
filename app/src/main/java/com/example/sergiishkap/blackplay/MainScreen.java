@@ -23,8 +23,8 @@ import java.util.Observer;
 
 public class MainScreen extends Activity implements Observer{
 
-    public static final String apiURL="http://developer.echonest.com/api/v4/artist/images?api_key=6XY1VAB7JI048NKWW&name=";
-    public static final String apiURLSuffix="&format=json&results=1&start=0&license=unknown";
+    public static final String apiURL="https://itunes.apple.com/search?term=";
+    public static final String apiURLSuffix="&entity=song";
     PlayerServiceHandler playerServiceHandler = PlayerServiceHandler.getInstance();
     Intent intent;
 
