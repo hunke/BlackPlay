@@ -29,6 +29,7 @@ public class VolumeHandler extends ContentObserver {
 
         AudioManager audio = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         int currentVolume=playerServiceHandler.getVolumeIndex();
+
         int delta=previousVolume-currentVolume;
         if(!playerServiceHandler.isScreenOn()){
             if(delta>0)

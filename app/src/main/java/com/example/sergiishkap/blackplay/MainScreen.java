@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.AudioManager;
 import android.media.MediaMetadataRetriever;
 import android.os.Bundle;
 import android.view.View;
@@ -38,6 +39,9 @@ public class MainScreen extends Activity implements Observer{
         filter.addAction(Intent.ACTION_SCREEN_OFF);
         BroadcastReceiver mReceiver = new SystemActionsReceiver();
         registerReceiver(mReceiver, filter);
+        if(playerServiceHandler.getVolumeIndex()==0){
+            playerServiceHandler.setVolumeIndex(5);
+        }
         setContentView(R.layout.main_screen);
         setRepeatImg();
         setShuffleImg();
