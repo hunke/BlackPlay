@@ -42,5 +42,15 @@
         <service
             android:name=".PlayerService"
             android:enabled="true"/>
+        <receiver
+            android:name=".SystemActionsReceiver"
+            android:enabled="true"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.HEADSET_PLUG" />
+                <action android:name="android.intent.action.PHONE_STATE" />
+            </intent-filter>
+        </receiver>
     </application>
+
 </manifest>

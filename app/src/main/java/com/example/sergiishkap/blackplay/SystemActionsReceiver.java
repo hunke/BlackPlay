@@ -3,12 +3,17 @@ package com.example.sergiishkap.blackplay;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.telephony.PhoneStateListener;
+import android.telephony.TelephonyManager;
 
 public class SystemActionsReceiver extends BroadcastReceiver {
     PlayerServiceHandler playerServiceHandler = PlayerServiceHandler.getInstance();
     public static boolean isScreenOn = true;
     @Override
     public void onReceive(Context context, Intent intent) {
+        TelephonyManager telephonyManager=(TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
+        CallListener callListener=new CallListener();
+        telephonyManager.listen(callListener, PhoneStateListener.LISTEN_CALL_STATE);
         if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
             isScreenOn=false;
             playerServiceHandler.setScreenOn(false);

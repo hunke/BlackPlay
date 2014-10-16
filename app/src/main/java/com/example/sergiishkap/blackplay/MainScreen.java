@@ -86,7 +86,8 @@ public class MainScreen extends Activity implements Observer{
                 forcePause();
                 break;
             case Constants.CALL_FINISHED:
-
+                forceResume();
+                break;
             default:
                 break;
         }
