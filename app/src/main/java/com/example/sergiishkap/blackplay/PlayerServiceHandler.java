@@ -98,6 +98,16 @@ public class PlayerServiceHandler extends Observable{
 
     public int songIndex;
 
+    public int getVolumeIndex() {
+        return volumeIndex;
+    }
+
+    public void setVolumeIndex(int volumeIndex) {
+        this.volumeIndex = volumeIndex;
+    }
+
+    public int volumeIndex;
+
     public int getNextSong() {
         return nextSong;
     }

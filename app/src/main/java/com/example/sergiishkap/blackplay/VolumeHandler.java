@@ -28,16 +28,18 @@ public class VolumeHandler extends ContentObserver {
         super.onChange(selfChange);
 
         AudioManager audio = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-        int currentVolume = audio.getStreamVolume(AudioManager.STREAM_MUSIC);
-
+        int currentVolume=playerServiceHandler.getVolumeIndex();
         int delta=previousVolume-currentVolume;
         if(!playerServiceHandler.isScreenOn()){
-            if(delta<0)
+            if(delta>0)
             {
                 audio.setStreamVolume(AudioManager.STREAM_MUSIC,previousVolume,0);
                 int ind= playerServiceHandler.getNextSong();
                 playerServiceHandler.setNextSong(ind + 1);
             }
+        }
+        else{
+            playerServiceHandler.setVolumeIndex(currentVolume);
         }
     }
 }
