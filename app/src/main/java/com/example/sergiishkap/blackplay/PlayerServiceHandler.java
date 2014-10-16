@@ -116,6 +116,7 @@ public class PlayerServiceHandler extends Observable{
     public void setScreenOn(boolean screenOn) {
         this.screenOn = screenOn;
         System.out.println("ScreenStateChanged to:"+screenOn);
+
     }
 
     public boolean screenOn=true;

@@ -24,7 +24,7 @@ public class ExternalMemorySelect extends ListActivity {
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-
+        playerServiceHandler.setScreenOn(true);
         setContentView(R.layout.playlist_from_storage);
         SimpleAdapter adapter = new SimpleAdapter(
                 this,
@@ -87,17 +87,17 @@ public class ExternalMemorySelect extends ListActivity {
     @Override
     protected void onPause() {
         // WHEN THE SCREEN IS ABOUT TO TURN OFF
-        if (SystemActionsReceiver.isScreenOn) {
+        if (!SystemActionsReceiver.isScreenOn) {
             playerServiceHandler.setScreenOn(false);
         } else {
-
+            playerServiceHandler.setScreenOn(true);
         }
         super.onPause();
     }
     @Override
     protected void onResume() {
         // ONLY WHEN SCREEN TURNS ON
-        if (!SystemActionsReceiver.isScreenOn) {
+        if (!playerServiceHandler.isScreenOn()) {
             playerServiceHandler.setScreenOn(true);
         } else {
         }

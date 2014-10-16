@@ -4,20 +4,17 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-/**
- * Created by sergii.shkap on 10/16/2014.
- */
 public class SystemActionsReceiver extends BroadcastReceiver {
     PlayerServiceHandler playerServiceHandler = PlayerServiceHandler.getInstance();
     public static boolean isScreenOn = true;
     @Override
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
-            playerServiceHandler.setScreenOn(false);
             isScreenOn=false;
+            playerServiceHandler.setScreenOn(false);
         } else if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
-            playerServiceHandler.setScreenOn(true);
             isScreenOn=true;
+            playerServiceHandler.setScreenOn(true);
         }else if(intent.getAction().equals(Intent.ACTION_HEADSET_PLUG)){
             int state = intent.getIntExtra("state", -1);
             switch (state){

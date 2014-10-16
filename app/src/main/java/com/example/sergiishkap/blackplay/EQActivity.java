@@ -39,7 +39,7 @@ public class EQActivity extends Activity implements SeekBar.OnSeekBarChangeListe
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.eq_layout);
-
+        playerServiceHandler.setScreenOn(true);
         enabled = (ToggleButton)findViewById(R.id.enabled);
         enabled.setOnCheckedChangeListener(this);
 
@@ -139,17 +139,17 @@ public class EQActivity extends Activity implements SeekBar.OnSeekBarChangeListe
     @Override
     protected void onPause() {
         // WHEN THE SCREEN IS ABOUT TO TURN OFF
-        if (SystemActionsReceiver.isScreenOn) {
+        if (!SystemActionsReceiver.isScreenOn) {
             playerServiceHandler.setScreenOn(false);
         } else {
-
+            playerServiceHandler.setScreenOn(true);
         }
         super.onPause();
     }
     @Override
     protected void onResume() {
         // ONLY WHEN SCREEN TURNS ON
-        if (!SystemActionsReceiver.isScreenOn) {
+        if (!playerServiceHandler.isScreenOn()) {
             playerServiceHandler.setScreenOn(true);
         } else {
         }

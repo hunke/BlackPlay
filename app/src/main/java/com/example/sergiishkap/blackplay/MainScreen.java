@@ -34,6 +34,7 @@ public class MainScreen extends Activity implements Observer{
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         playerServiceHandler.addObserver(this);
         IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_ON);
+        playerServiceHandler.setScreenOn(true);
         filter.addAction(Intent.ACTION_SCREEN_OFF);
         BroadcastReceiver mReceiver = new SystemActionsReceiver();
         registerReceiver(mReceiver, filter);
@@ -77,6 +78,7 @@ public class MainScreen extends Activity implements Observer{
                 break;
             case Constants.HEADPHONES_PLUGGED:
                 forcePause();
+                break;
             case Constants.NEXT_SONG_BG:
                 nextTrack();
                 break;
@@ -87,17 +89,17 @@ public class MainScreen extends Activity implements Observer{
     @Override
     protected void onPause() {
         // WHEN THE SCREEN IS ABOUT TO TURN OFF
-        if (SystemActionsReceiver.isScreenOn) {
+        if (!SystemActionsReceiver.isScreenOn) {
             playerServiceHandler.setScreenOn(false);
         } else {
-
+            playerServiceHandler.setScreenOn(true);
         }
         super.onPause();
     }
     @Override
     protected void onResume() {
         // ONLY WHEN SCREEN TURNS ON
-        if (!SystemActionsReceiver.isScreenOn) {
+        if (!playerServiceHandler.isScreenOn()) {
             playerServiceHandler.setScreenOn(true);
         } else {
         }
