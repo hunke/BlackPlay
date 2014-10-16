@@ -16,7 +16,7 @@ import android.widget.ToggleButton;
 public class EQActivity extends Activity implements SeekBar.OnSeekBarChangeListener,
         CompoundButton.OnCheckedChangeListener,
         View.OnClickListener {
-    PlayerServiceHandler presetRepeatShuffleHandler= PlayerServiceHandler.getInstance();
+    PlayerServiceHandler playerServiceHandler = PlayerServiceHandler.getInstance();
     TextView bass_boost_label = null;
     SeekBar bass_boost = null;
     ToggleButton enabled = null;
@@ -140,7 +140,7 @@ public class EQActivity extends Activity implements SeekBar.OnSeekBarChangeListe
     protected void onPause() {
         // WHEN THE SCREEN IS ABOUT TO TURN OFF
         if (SystemActionsReceiver.isScreenOn) {
-            presetRepeatShuffleHandler.setScreenOn(false);
+            playerServiceHandler.setScreenOn(false);
         } else {
 
         }
@@ -150,7 +150,7 @@ public class EQActivity extends Activity implements SeekBar.OnSeekBarChangeListe
     protected void onResume() {
         // ONLY WHEN SCREEN TURNS ON
         if (!SystemActionsReceiver.isScreenOn) {
-            presetRepeatShuffleHandler.setScreenOn(true);
+            playerServiceHandler.setScreenOn(true);
         } else {
         }
         super.onResume();

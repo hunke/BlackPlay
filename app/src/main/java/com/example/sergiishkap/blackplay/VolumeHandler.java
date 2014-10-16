@@ -6,7 +6,7 @@ import android.media.AudioManager;
 import android.os.Handler;
 
 public class VolumeHandler extends ContentObserver {
-    PlayerServiceHandler presetRepeatShuffleHandler= PlayerServiceHandler.getInstance();
+    PlayerServiceHandler playerServiceHandler = PlayerServiceHandler.getInstance();
     int previousVolume;
     Context context;
 
@@ -31,12 +31,12 @@ public class VolumeHandler extends ContentObserver {
         int currentVolume = audio.getStreamVolume(AudioManager.STREAM_MUSIC);
 
         int delta=previousVolume-currentVolume;
-        if(!presetRepeatShuffleHandler.isScreenOn()){
+        if(!playerServiceHandler.isScreenOn()){
             if(delta<0)
             {
                 audio.setStreamVolume(AudioManager.STREAM_MUSIC,previousVolume,0);
-                int ind=presetRepeatShuffleHandler.getNextSong();
-                presetRepeatShuffleHandler.setNextSong(ind+1);
+                int ind= playerServiceHandler.getNextSong();
+                playerServiceHandler.setNextSong(ind + 1);
             }
         }
     }

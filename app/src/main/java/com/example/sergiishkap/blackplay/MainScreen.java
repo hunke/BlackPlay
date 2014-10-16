@@ -25,14 +25,14 @@ public class MainScreen extends Activity implements Observer{
 
     public static final String apiURL="http://developer.echonest.com/api/v4/artist/images?api_key=6XY1VAB7JI048NKWW&name=";
     public static final String apiURLSuffix="&format=json&results=1&start=0&license=unknown";
-    PlayerServiceHandler presetRepeatShuffleHandler= PlayerServiceHandler.getInstance();
+    PlayerServiceHandler playerServiceHandler = PlayerServiceHandler.getInstance();
     Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        presetRepeatShuffleHandler.addObserver(this);
+        playerServiceHandler.addObserver(this);
         IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_ON);
         filter.addAction(Intent.ACTION_SCREEN_OFF);
         BroadcastReceiver mReceiver = new SystemActionsReceiver();
@@ -40,14 +40,14 @@ public class MainScreen extends Activity implements Observer{
         setContentView(R.layout.main_screen);
         setRepeatImg();
         setShuffleImg();
-        setSongMetadata(presetRepeatShuffleHandler.getSongPathAndName());
-        if(!presetRepeatShuffleHandler.isServiceStarted()){
+        setSongMetadata(playerServiceHandler.getSongPathAndName());
+        if(!playerServiceHandler.isServiceStarted()){
             Intent service= new Intent(this,PlayerService.class);
             startService(service);
         }
         Intent intent=getIntent();
         int songPosition=intent.getIntExtra("songIndex",Constants.NO_SONG_SELECTED);
-        presetRepeatShuffleHandler.setSongIndex(songPosition);
+        playerServiceHandler.setSongIndex(songPosition);
 
     }
     @Override
@@ -64,7 +64,7 @@ public class MainScreen extends Activity implements Observer{
                 setPlayImg();
                 break;
             case Constants.SONG_META_CHANGED:
-                setSongMetadata(presetRepeatShuffleHandler.getSongPathAndName());
+                setSongMetadata(playerServiceHandler.getSongPathAndName());
                 break;
             case Constants.SONG_INDEX_CHANGED:
                 setPlayImg();
@@ -88,7 +88,7 @@ public class MainScreen extends Activity implements Observer{
     protected void onPause() {
         // WHEN THE SCREEN IS ABOUT TO TURN OFF
         if (SystemActionsReceiver.isScreenOn) {
-            presetRepeatShuffleHandler.setScreenOn(false);
+            playerServiceHandler.setScreenOn(false);
         } else {
 
         }
@@ -98,7 +98,7 @@ public class MainScreen extends Activity implements Observer{
     protected void onResume() {
         // ONLY WHEN SCREEN TURNS ON
         if (!SystemActionsReceiver.isScreenOn) {
-            presetRepeatShuffleHandler.setScreenOn(true);
+            playerServiceHandler.setScreenOn(true);
         } else {
         }
         super.onResume();
@@ -173,7 +173,7 @@ public class MainScreen extends Activity implements Observer{
             if(artist!=null&&artist!=""){
                 artistName.setText(artist);
             }else{
-                artistName.setText(presetRepeatShuffleHandler.getSongPathAndName());
+                artistName.setText(playerServiceHandler.getSongPathAndName());
             }
             String songName=retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
             if(songName!=null&&""!=songName){
@@ -213,7 +213,7 @@ public class MainScreen extends Activity implements Observer{
     }
     public void setPlayImg(){
         ImageButton playBtn=(ImageButton)findViewById(R.id.play_btn);
-        if(presetRepeatShuffleHandler.isMpPlaying()){
+        if(playerServiceHandler.isMpPlaying()){
             playBtn.setImageResource(R.drawable.pause);
         }else {
             playBtn.setImageResource(R.drawable.play);
@@ -222,7 +222,7 @@ public class MainScreen extends Activity implements Observer{
     }
     public void setRepeatImg(){
         ImageButton repeatbtn=(ImageButton)findViewById(R.id.repeat);
-        if(presetRepeatShuffleHandler.isIsRepeatOn()){
+        if(playerServiceHandler.isIsRepeatOn()){
             repeatbtn.setImageResource(R.drawable.repeat_on_img);
         }else {
             repeatbtn.setImageResource(R.drawable.repeat_off_img);
@@ -230,7 +230,7 @@ public class MainScreen extends Activity implements Observer{
     }
     public void setShuffleImg(){
         ImageButton shuffleBtn=(ImageButton)findViewById(R.id.shuffle);
-        if(presetRepeatShuffleHandler.isIsShuffleOn()){
+        if(playerServiceHandler.isIsShuffleOn()){
             shuffleBtn.setImageResource(R.drawable.shuffle_on_img);
         }else {
             shuffleBtn.setImageResource(R.drawable.shuffle_off_img);

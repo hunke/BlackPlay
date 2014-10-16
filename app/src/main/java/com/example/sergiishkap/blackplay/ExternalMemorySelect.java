@@ -16,7 +16,7 @@ import java.util.HashMap;
 
 public class ExternalMemorySelect extends ListActivity {
     static String path=Environment.getExternalStorageDirectory().getAbsolutePath();
-    PlayerServiceHandler presetRepeatShuffleHandler= PlayerServiceHandler.getInstance();
+    PlayerServiceHandler playerServiceHandler = PlayerServiceHandler.getInstance();
     final static String FILTER = "mp3";
     static File rootDir = new File(path);
 
@@ -88,7 +88,7 @@ public class ExternalMemorySelect extends ListActivity {
     protected void onPause() {
         // WHEN THE SCREEN IS ABOUT TO TURN OFF
         if (SystemActionsReceiver.isScreenOn) {
-            presetRepeatShuffleHandler.setScreenOn(false);
+            playerServiceHandler.setScreenOn(false);
         } else {
 
         }
@@ -98,7 +98,7 @@ public class ExternalMemorySelect extends ListActivity {
     protected void onResume() {
         // ONLY WHEN SCREEN TURNS ON
         if (!SystemActionsReceiver.isScreenOn) {
-            presetRepeatShuffleHandler.setScreenOn(true);
+            playerServiceHandler.setScreenOn(true);
         } else {
         }
         super.onResume();

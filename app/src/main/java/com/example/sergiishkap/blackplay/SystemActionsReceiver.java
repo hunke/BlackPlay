@@ -8,24 +8,24 @@ import android.content.Intent;
  * Created by sergii.shkap on 10/16/2014.
  */
 public class SystemActionsReceiver extends BroadcastReceiver {
-    PlayerServiceHandler presetRepeatShuffleHandler= PlayerServiceHandler.getInstance();
+    PlayerServiceHandler playerServiceHandler = PlayerServiceHandler.getInstance();
     public static boolean isScreenOn = true;
     @Override
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
-            presetRepeatShuffleHandler.setScreenOn(false);
+            playerServiceHandler.setScreenOn(false);
             isScreenOn=false;
         } else if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
-            presetRepeatShuffleHandler.setScreenOn(true);
+            playerServiceHandler.setScreenOn(true);
             isScreenOn=true;
         }else if(intent.getAction().equals(Intent.ACTION_HEADSET_PLUG)){
             int state = intent.getIntExtra("state", -1);
             switch (state){
                 case 0:
-                    presetRepeatShuffleHandler.setHeadPhonesPlugged(false);
+                    playerServiceHandler.setHeadPhonesPlugged(false);
                     break;
                 case 1:
-                    presetRepeatShuffleHandler.setHeadPhonesPlugged(true);
+                    playerServiceHandler.setHeadPhonesPlugged(true);
                     break;
                 default:
                     break;

@@ -13,9 +13,9 @@ import java.util.Random;
 
 public class PlayerService extends IntentService implements MediaPlayer.OnCompletionListener {
     VolumeHandler mSettingsContentObserver;
-    PlayerServiceHandler presetRepeatShuffleHandler= PlayerServiceHandler.getInstance();
-    MediaPlayer mp=presetRepeatShuffleHandler.getMp();
-    public ArrayList<HashMap<String,String>> songList=presetRepeatShuffleHandler.songList;
+    PlayerServiceHandler playerServiceHandler = PlayerServiceHandler.getInstance();
+    MediaPlayer mp= playerServiceHandler.getMp();
+    public ArrayList<HashMap<String,String>> songList= playerServiceHandler.songList;
     public void randoMizeSongList(ArrayList<HashMap<String,String>> randomizedSongList){
         long seed=System.nanoTime();
         Collections.shuffle(randomizedSongList, new Random(seed));
@@ -55,7 +55,7 @@ public class PlayerService extends IntentService implements MediaPlayer.OnComple
         if(fromPlaylist){
             startNewSong(songIndex);
         }
-        presetRepeatShuffleHandler.setSongIndex(songIndex);
+        playerServiceHandler.setSongIndex(songIndex);
         switch (actionName){
             case Constants.PLAY_PAUSE:
                 System.out.println("Play/PauseWorks");
@@ -84,30 +84,30 @@ public class PlayerService extends IntentService implements MediaPlayer.OnComple
                 System.out.println("Doesn't work!");
                 break;
         }
-        presetRepeatShuffleHandler.setServiceStarted(true);
+        playerServiceHandler.setServiceStarted(true);
         return super.onStartCommand(intent,flags,startId);
     }
     public void resetMediaPlayer(){
         mp.reset();
     }
     public void initializeMediaPlayer(){
-        presetRepeatShuffleHandler.setMp(new MediaPlayer());
+        playerServiceHandler.setMp(new MediaPlayer());
     }
     public void resumePlaying(){
         mp.start();
-        presetRepeatShuffleHandler.setMpPlaying(true);
+        playerServiceHandler.setMpPlaying(true);
 
     }
     public void pausePlaying(){
         if(mp!=null){
             mp.pause();
-            presetRepeatShuffleHandler.setMpPlaying(false);
+            playerServiceHandler.setMpPlaying(false);
         }
     }
     public void startNewSong(int i){
         if(Constants.NO_SONG_SELECTED==i){
             resetMediaPlayer();
-            presetRepeatShuffleHandler.setMpPlaying(false);
+            playerServiceHandler.setMpPlaying(false);
         }else{
             String fileLoc=getSelectedFileByLocation(i);
             System.out.println("New Song is prepearing");
@@ -120,10 +120,10 @@ public class PlayerService extends IntentService implements MediaPlayer.OnComple
                 mp.prepare();
                 mp.start();
                 mp.setOnCompletionListener(this);
-                presetRepeatShuffleHandler.setCurrentSongPosition(i);
-                presetRepeatShuffleHandler.setSongIndex(i);
-                presetRepeatShuffleHandler.setMpPlaying(true);
-                presetRepeatShuffleHandler.setSongPathAndName(fileLoc);
+                playerServiceHandler.setCurrentSongPosition(i);
+                playerServiceHandler.setSongIndex(i);
+                playerServiceHandler.setMpPlaying(true);
+                playerServiceHandler.setSongPathAndName(fileLoc);
             }catch (Exception e){
                 e.printStackTrace();
             }
@@ -133,64 +133,64 @@ public class PlayerService extends IntentService implements MediaPlayer.OnComple
         nextTrack();
     }
     public void changeRepeat(){
-        if(presetRepeatShuffleHandler.isIsRepeatOn()){
-            presetRepeatShuffleHandler.setIsRepeatOn(false);
+        if(playerServiceHandler.isIsRepeatOn()){
+            playerServiceHandler.setIsRepeatOn(false);
         }else {
-            presetRepeatShuffleHandler.setIsRepeatOn(true);
+            playerServiceHandler.setIsRepeatOn(true);
         }
     }
     public void changeShuffle(){
-        if(presetRepeatShuffleHandler.isIsShuffleOn()){
-            presetRepeatShuffleHandler.setIsShuffleOn(false);
+        if(playerServiceHandler.isIsShuffleOn()){
+            playerServiceHandler.setIsShuffleOn(false);
             songList.clear();
             songList=ExternalMemorySelect.getSongList();
         }else {
-            presetRepeatShuffleHandler.setIsShuffleOn(true);
-            songList=presetRepeatShuffleHandler.songList;
+            playerServiceHandler.setIsShuffleOn(true);
+            songList= playerServiceHandler.songList;
             randoMizeSongList(songList);
         }
     }
     public void changePlayPause(){
         if(mp.isPlaying()){
             pausePlaying();
-            presetRepeatShuffleHandler.setMpPlaying(false);
+            playerServiceHandler.setMpPlaying(false);
         }
-        else if(presetRepeatShuffleHandler.getSongIndex()==Constants.NO_SONG_SELECTED){
+        else if(playerServiceHandler.getSongIndex()==Constants.NO_SONG_SELECTED){
             startNewSong(0);
-            presetRepeatShuffleHandler.setMpPlaying(true);
+            playerServiceHandler.setMpPlaying(true);
         }
         else {
             resumePlaying();
-            presetRepeatShuffleHandler.setMpPlaying(true);
+            playerServiceHandler.setMpPlaying(true);
         }
     }
     public void nextTrack(){
         int songListSize=songList.size();
 
-        if(!presetRepeatShuffleHandler.isIsRepeatOn()&&presetRepeatShuffleHandler.getCurrentSongPosition()==songListSize-1){
-            presetRepeatShuffleHandler.setSongIndex(Constants.NO_SONG_SELECTED);
+        if(!playerServiceHandler.isIsRepeatOn()&& playerServiceHandler.getCurrentSongPosition()==songListSize-1){
+            playerServiceHandler.setSongIndex(Constants.NO_SONG_SELECTED);
         }
-        else if(presetRepeatShuffleHandler.isIsRepeatOn()&&presetRepeatShuffleHandler.getCurrentSongPosition()==songListSize-1){
-            presetRepeatShuffleHandler.setSongIndex(0);
+        else if(playerServiceHandler.isIsRepeatOn()&& playerServiceHandler.getCurrentSongPosition()==songListSize-1){
+            playerServiceHandler.setSongIndex(0);
         }
         else{
-            presetRepeatShuffleHandler.setSongIndex(presetRepeatShuffleHandler.getCurrentSongPosition()+1);
+            playerServiceHandler.setSongIndex(playerServiceHandler.getCurrentSongPosition()+1);
         }
-        startNewSong(presetRepeatShuffleHandler.getSongIndex());
+        startNewSong(playerServiceHandler.getSongIndex());
     }
     public void previousTrack(){
         int songListSize=songList.size();
 
-        if(!presetRepeatShuffleHandler.isIsRepeatOn()&&presetRepeatShuffleHandler.getCurrentSongPosition()==0){
-            presetRepeatShuffleHandler.setSongIndex(Constants.NO_SONG_SELECTED);
+        if(!playerServiceHandler.isIsRepeatOn()&& playerServiceHandler.getCurrentSongPosition()==0){
+            playerServiceHandler.setSongIndex(Constants.NO_SONG_SELECTED);
         }
-        else if(presetRepeatShuffleHandler.isIsRepeatOn()&&presetRepeatShuffleHandler.getCurrentSongPosition()==0){
-            presetRepeatShuffleHandler.setSongIndex(songListSize-1);
+        else if(playerServiceHandler.isIsRepeatOn()&& playerServiceHandler.getCurrentSongPosition()==0){
+            playerServiceHandler.setSongIndex(songListSize-1);
         }
         else{
-            presetRepeatShuffleHandler.setSongIndex(presetRepeatShuffleHandler.getCurrentSongPosition()-1);
+            playerServiceHandler.setSongIndex(playerServiceHandler.getCurrentSongPosition()-1);
         }
-        startNewSong(presetRepeatShuffleHandler.getSongIndex());
+        startNewSong(playerServiceHandler.getSongIndex());
     }
 
 }
