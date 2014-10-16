@@ -35,7 +35,7 @@ public class MainScreen extends Activity implements Observer{
         presetRepeatShuffleHandler.addObserver(this);
         IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_ON);
         filter.addAction(Intent.ACTION_SCREEN_OFF);
-        BroadcastReceiver mReceiver = new ScreenReceiver();
+        BroadcastReceiver mReceiver = new SystemActionsReceiver();
         registerReceiver(mReceiver, filter);
         setContentView(R.layout.main_screen);
         setRepeatImg();
@@ -87,7 +87,7 @@ public class MainScreen extends Activity implements Observer{
     @Override
     protected void onPause() {
         // WHEN THE SCREEN IS ABOUT TO TURN OFF
-        if (ScreenReceiver.isScreenOn) {
+        if (SystemActionsReceiver.isScreenOn) {
             presetRepeatShuffleHandler.setScreenOn(false);
         } else {
 
@@ -97,7 +97,7 @@ public class MainScreen extends Activity implements Observer{
     @Override
     protected void onResume() {
         // ONLY WHEN SCREEN TURNS ON
-        if (!ScreenReceiver.isScreenOn) {
+        if (!SystemActionsReceiver.isScreenOn) {
             presetRepeatShuffleHandler.setScreenOn(true);
         } else {
         }

@@ -139,7 +139,7 @@ public class EQActivity extends Activity implements SeekBar.OnSeekBarChangeListe
     @Override
     protected void onPause() {
         // WHEN THE SCREEN IS ABOUT TO TURN OFF
-        if (ScreenReceiver.isScreenOn) {
+        if (SystemActionsReceiver.isScreenOn) {
             presetRepeatShuffleHandler.setScreenOn(false);
         } else {
 
@@ -149,7 +149,7 @@ public class EQActivity extends Activity implements SeekBar.OnSeekBarChangeListe
     @Override
     protected void onResume() {
         // ONLY WHEN SCREEN TURNS ON
-        if (!ScreenReceiver.isScreenOn) {
+        if (!SystemActionsReceiver.isScreenOn) {
             presetRepeatShuffleHandler.setScreenOn(true);
         } else {
         }

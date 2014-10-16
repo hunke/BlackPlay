@@ -7,7 +7,7 @@ import android.content.Intent;
 /**
  * Created by sergii.shkap on 10/16/2014.
  */
-public class ScreenReceiver extends BroadcastReceiver {
+public class SystemActionsReceiver extends BroadcastReceiver {
     PlayerServiceHandler presetRepeatShuffleHandler= PlayerServiceHandler.getInstance();
     public static boolean isScreenOn = true;
     @Override
