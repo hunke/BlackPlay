@@ -7,18 +7,21 @@ public class CallListener extends PhoneStateListener {
     PlayerServiceHandler playerServiceHandler = PlayerServiceHandler.getInstance();
 
     public void onCallStateChanged(int state, String incomingNumber) {
-        switch (state) {
-            case TelephonyManager.CALL_STATE_IDLE:
-                playerServiceHandler.setOnCall(false);
-                break;
-            case TelephonyManager.CALL_STATE_OFFHOOK:
-                playerServiceHandler.setOnCall(true);
-                break;
-            case TelephonyManager.CALL_STATE_RINGING:
-                playerServiceHandler.setOnCall(true);
-                break;
-            default:
-                break;
+        if(playerServiceHandler.isMpPlaying()){
+            switch (state) {
+                case TelephonyManager.CALL_STATE_IDLE:
+                    playerServiceHandler.setOnCall(false);
+                    break;
+                case TelephonyManager.CALL_STATE_OFFHOOK:
+                    playerServiceHandler.setOnCall(true);
+                    break;
+                case TelephonyManager.CALL_STATE_RINGING:
+                    playerServiceHandler.setOnCall(true);
+                    break;
+                default:
+                    break;
+            }
         }
+
     }
 }

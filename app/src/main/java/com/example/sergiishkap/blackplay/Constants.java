@@ -25,5 +25,4 @@ public class Constants {
     public static final int ON_CALL=40;
     public static final int CALL_FINISHED=41;
 
-
 }

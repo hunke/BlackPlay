@@ -37,10 +37,11 @@ public class PlayerServiceHandler extends Observable{
 
     public void setMpPlaying(boolean mpPlaying1) {
         mpPlaying = mpPlaying1;
+        System.out.println("Playing is: " + mpPlaying);
         triggerObservers(Constants.PLAY_STATE_CHANGED);
     }
 
-    private boolean mpPlaying;
+    private boolean mpPlaying=false;
     public void setServiceStarted(boolean serviceStarted1) {
         serviceStarted = serviceStarted1;
     }
