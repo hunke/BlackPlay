@@ -15,7 +15,7 @@ public class PlayerServiceHandler extends Observable{
         return instance;
     }
 
-    private boolean isRepeatOn;
+    private boolean isRepeatOn=true;
     public boolean isShuffleOn;
     public boolean isServiceStarted() {
         return serviceStarted;
