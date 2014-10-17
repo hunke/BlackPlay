@@ -254,7 +254,8 @@ public class MainScreen extends Activity implements Observer{
         unloadBackground();
         ImageView bgImg=(ImageView)findViewById(R.id.album_bg);
         Drawable rightArrow = getResources().getDrawable(R.drawable.logo_combo);
-        rightArrow.setAlpha(50);
+        rightArrow.setAlpha(100);
         bgImg.setImageDrawable(rightArrow);
+        bgImg.setScaleType(ImageView.ScaleType.FIT_XY);
     }
 }
