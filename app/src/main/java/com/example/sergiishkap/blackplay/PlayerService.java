@@ -80,9 +80,6 @@ public class PlayerService extends IntentService implements MediaPlayer.OnComple
             case Constants.HEADPHONES_UNPLUGGED:
                 pausePlaying();
                 break;
-            case Constants.HEADPHONES_PLUGGED:
-                resumePlaying();
-                break;
             case Constants.CALL_FINISHED:
                 resumePlaying();
                 break;

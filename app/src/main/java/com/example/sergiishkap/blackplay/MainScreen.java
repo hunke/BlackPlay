@@ -37,6 +37,7 @@ public class MainScreen extends Activity implements Observer{
         IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_ON);
         playerServiceHandler.setScreenOn(true);
         filter.addAction(Intent.ACTION_SCREEN_OFF);
+        filter.addAction(Intent.ACTION_HEADSET_PLUG);
         BroadcastReceiver mReceiver = new SystemActionsReceiver();
         registerReceiver(mReceiver, filter);
         setContentView(R.layout.main_screen);
@@ -75,9 +76,6 @@ public class MainScreen extends Activity implements Observer{
                 previousTrack();
                 break;
             case Constants.HEADPHONES_UNPLUGGED:
-                forcePause();
-                break;
-            case Constants.HEADPHONES_PLUGGED:
                 forcePause();
                 break;
             case Constants.NEXT_SONG_BG:
