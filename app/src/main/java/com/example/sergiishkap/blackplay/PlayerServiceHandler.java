@@ -138,7 +138,7 @@ public class PlayerServiceHandler extends Observable{
 
     public void setHeadPhonesPlugged(boolean headPhonesPlugged) {
         this.headPhonesPlugged = headPhonesPlugged;
-        if(headPhonesPlugged){
+        if(!headPhonesPlugged){
             triggerObservers(Constants.HEADPHONES_UNPLUGGED);
         }else{
             triggerObservers(Constants.HEADPHONES_PLUGGED);

@@ -50,12 +50,12 @@ public class PlayerService extends IntentService implements MediaPlayer.OnComple
             initializeMediaPlayer();
         }
         int actionName=intent.getIntExtra(Constants.ACTION, 0);
-        int songIndex=intent.getIntExtra(Constants.SONG_INDEX,Constants.NO_SONG_SELECTED);
         boolean fromPlaylist=intent.getBooleanExtra(Constants.SELECTED_FROM_PLAYLIST,false);
         if(fromPlaylist){
+            int songIndex=intent.getIntExtra(Constants.SONG_INDEX,Constants.NO_SONG_SELECTED);
             startNewSong(songIndex);
+            playerServiceHandler.setSongIndex(songIndex);
         }
-        playerServiceHandler.setSongIndex(songIndex);
         switch (actionName){
             case Constants.PLAY_PAUSE:
                 System.out.println("Play/PauseWorks");
@@ -79,6 +79,7 @@ public class PlayerService extends IntentService implements MediaPlayer.OnComple
                 break;
             case Constants.HEADPHONES_UNPLUGGED:
                 pausePlaying();
+                playerServiceHandler.setForcePaused(true);
                 break;
             case Constants.CALL_FINISHED:
                 resumePlaying();
@@ -177,7 +178,6 @@ public class PlayerService extends IntentService implements MediaPlayer.OnComple
     }
     public void nextTrack(){
         int songListSize=songList.size();
-
         if(!playerServiceHandler.isIsRepeatOn()&& playerServiceHandler.getCurrentSongPosition()==songListSize-1){
             playerServiceHandler.setSongIndex(Constants.NO_SONG_SELECTED);
         }

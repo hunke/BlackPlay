@@ -35,12 +35,15 @@ public class VolumeHandler extends ContentObserver {
         if(!playerServiceHandler.isScreenOn()&&playerServiceHandler.isMpPlaying()){
             if(delta>0)
             {
-                audio.setStreamVolume(AudioManager.STREAM_MUSIC,previousVolume,0);
+                audio.setStreamVolume(AudioManager.STREAM_MUSIC,playerServiceHandler.volumeIndex,0);
                 int ind= playerServiceHandler.getNextSong();
                 playerServiceHandler.setNextSong(ind + 1);
             }else {
                 playerServiceHandler.setVolumeIndex(currentVolume);
             }
+        }
+        else {
+            playerServiceHandler.setVolumeIndex(currentVolume);
         }
     }
 }
