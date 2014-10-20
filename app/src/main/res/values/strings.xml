@@ -4,5 +4,6 @@
     <string name="app_name">BlackPlay</string>
     <string name="action_settings">Settings</string>
     <string name="to_play_list">\u003c</string>
-    <string name="banner_ad_unit_id">ca-app-pub-6024431417737307/4265627676</string>
+    <string name="eq_on">\u2713</string>
+    <string name="eq_off">\u2717</string>
 </resources>

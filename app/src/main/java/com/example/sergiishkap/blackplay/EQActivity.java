@@ -2,6 +2,7 @@ package com.example.sergiishkap.blackplay;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.media.audiofx.BassBoost;
 import android.media.audiofx.Equalizer;
 import android.os.Bundle;
@@ -42,6 +43,7 @@ public class EQActivity extends Activity implements SeekBar.OnSeekBarChangeListe
         playerServiceHandler.setScreenOn(true);
         enabled = (ToggleButton)findViewById(R.id.enabled);
         enabled.setOnCheckedChangeListener(this);
+        enabled.setBackgroundColor(Color.TRANSPARENT);
 
         flat = (ImageButton)findViewById(R.id.flat);
         flat.setOnClickListener(this);
