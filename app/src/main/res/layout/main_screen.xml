@@ -1,8 +1,16 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MyActivity">
+
+        <com.google.android.gms.ads.AdView android:id="@+id/adView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            ads:adSize="BANNER"
+            ads:adUnitId="ca-app-pub-6024431417737307/8137424078"/>
+
     <ImageView
         android:id="@+id/album_bg"
         android:scaleType="fitXY"
@@ -11,7 +19,8 @@
         />
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="70dp">
+        android:layout_height="70dp"
+        android:layout_below="@id/adView">
 
         <Button
             android:background="@null"

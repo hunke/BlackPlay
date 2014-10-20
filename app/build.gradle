@@ -6,8 +6,8 @@ android {
 
     defaultConfig {
         applicationId "com.example.sergiishkap.blackplay"
-        minSdkVersion 15
-        targetSdkVersion 20
+        minSdkVersion 11
+        targetSdkVersion 15
         versionCode 1
         versionName "1.0"
     }
@@ -21,4 +21,5 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.google.android.gms:play-services:5.+'
 }

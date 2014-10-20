@@ -3,6 +3,7 @@ package com.example.sergiishkap.blackplay;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -11,12 +12,18 @@ import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.media.MediaMetadataRetriever;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.content.Intent;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -28,9 +35,13 @@ public class MainScreen extends Activity implements Observer{
     public static final String apiURLSuffix="&entity=song";
     PlayerServiceHandler playerServiceHandler = PlayerServiceHandler.getInstance();
     Intent intent;
+    private AdView adView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        final TelephonyManager tm =(TelephonyManager)getBaseContext().getSystemService(Context.TELEPHONY_SERVICE);
+
+        String deviceId = tm.getDeviceId();
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         playerServiceHandler.addObserver(this);
@@ -41,6 +52,12 @@ public class MainScreen extends Activity implements Observer{
         BroadcastReceiver mReceiver = new SystemActionsReceiver();
         registerReceiver(mReceiver, filter);
         setContentView(R.layout.main_screen);
+        adView = (AdView)findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .addTestDevice(deviceId)
+                .build();
+        adView.loadAd(adRequest);
         setRepeatImg();
         setShuffleImg();
         setSongMetadata(playerServiceHandler.getSongPathAndName());
@@ -99,6 +116,9 @@ public class MainScreen extends Activity implements Observer{
         } else {
             playerServiceHandler.setScreenOn(true);
         }
+        if (adView != null) {
+            adView.pause();
+        }
         super.onPause();
     }
     @Override
@@ -109,6 +129,16 @@ public class MainScreen extends Activity implements Observer{
         } else {
         }
         super.onResume();
+        if (adView != null) {
+            adView.resume();
+        }
+    }
+    @Override
+    public void onDestroy() {
+        if (adView != null) {
+            adView.destroy();
+        }
+        super.onDestroy();
     }
     public void forceResume(){
         Intent service=new Intent(MainScreen.this,PlayerService.class);
