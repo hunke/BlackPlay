@@ -161,4 +161,14 @@ public class PlayerServiceHandler extends Observable{
     }
 
     public boolean onCall;
+
+    public boolean isForcePaused() {
+        return forcePaused;
+    }
+
+    public void setForcePaused(boolean forcePaused) {
+        this.forcePaused = forcePaused;
+    }
+
+    public boolean forcePaused;
 }

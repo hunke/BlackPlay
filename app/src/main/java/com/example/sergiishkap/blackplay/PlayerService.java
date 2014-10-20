@@ -162,14 +162,17 @@ public class PlayerService extends IntentService implements MediaPlayer.OnComple
         if(mp.isPlaying()){
             pausePlaying();
             playerServiceHandler.setMpPlaying(false);
+            playerServiceHandler.setForcePaused(true);
         }
         else if(playerServiceHandler.getSongIndex()==Constants.NO_SONG_SELECTED){
             startNewSong(0);
             playerServiceHandler.setMpPlaying(true);
+            playerServiceHandler.setForcePaused(false);
         }
         else {
             resumePlaying();
             playerServiceHandler.setMpPlaying(true);
+            playerServiceHandler.setForcePaused(false);
         }
     }
     public void nextTrack(){

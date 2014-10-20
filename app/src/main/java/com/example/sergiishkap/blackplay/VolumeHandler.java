@@ -42,8 +42,5 @@ public class VolumeHandler extends ContentObserver {
                 playerServiceHandler.setVolumeIndex(currentVolume);
             }
         }
-        else {
-            playerServiceHandler.setVolumeIndex(currentVolume);
-        }
     }
 }
