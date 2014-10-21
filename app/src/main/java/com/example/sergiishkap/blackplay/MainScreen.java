@@ -76,6 +76,10 @@ public class MainScreen extends Activity implements Observer{
         Intent intent=getIntent();
         int songPosition=intent.getIntExtra("songIndex",Constants.NO_SONG_SELECTED);
         playerServiceHandler.setSongIndex(songPosition);
+        boolean fromPL=intent.getBooleanExtra(Constants.SELECTED_FROM_PLAYLIST,false);
+        if(fromPL){
+          playSelectedTrack();
+        }
 
     }
     @Override
@@ -162,6 +166,11 @@ public class MainScreen extends Activity implements Observer{
     public void forceResume(){
         Intent service=new Intent(MainScreen.this,PlayerService.class);
         service.putExtra(Constants.ACTION,Constants.CALL_FINISHED);
+        startService(service);
+    }
+    public void playSelectedTrack(){
+        Intent service=new Intent(MainScreen.this,PlayerService.class);
+        service.putExtra(Constants.ACTION,Constants.PLAY_SELECTED_TRACK);
         startService(service);
     }
     public void buttonToPlaylist_Click(View view) {

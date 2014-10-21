@@ -24,6 +24,7 @@ public class Constants {
     public static final int HEADPHONES_PLUGGED=31;
     public static final int ON_CALL=40;
     public static final int CALL_FINISHED=41;
+    public static final int PLAY_SELECTED_TRACK=42;
     public static final String REPEAT_PREF = "repeatKey";
     public static final String SHUFFLE_PREF = "shuffleKey";
     public static final String PLAYERPREF= "MyPrefs";
