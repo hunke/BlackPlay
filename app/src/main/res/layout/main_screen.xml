@@ -22,13 +22,14 @@
         android:layout_height="70dp"
         android:layout_below="@id/adView">
 
-        <Button
+        <ImageButton
             android:background="@null"
             android:id="@+id/to_playlist"
-            android:layout_width="wrap_content"
+            android:layout_width="75dp"
             android:layout_height="fill_parent"
-            android:textSize="26sp"
-            android:text="@string/to_play_list"
+            android:src="@drawable/playlist_img"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
             android:onClick="buttonToPlaylist_Click"
             />
         <ImageButton
