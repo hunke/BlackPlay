@@ -332,9 +332,4 @@ public class EQActivity extends Activity implements SeekBar.OnSeekBarChangeListe
 
         updateUI();
     }
-    public void backToMain(View view){
-        Intent intent=new Intent(EQActivity.this,MainScreen.class);
-        intent.putExtra("fromEQ", "yes");
-        startActivity(intent);
-    }
 }

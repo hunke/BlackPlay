@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">PlayBack</string>
+    <string name="app_name">PlayBack Music Player</string>
     <string name="action_settings">Settings</string>
     <string name="to_play_list">\u003c</string>
     <string name="eq_on">\u2713</string>

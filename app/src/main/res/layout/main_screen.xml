@@ -5,11 +5,7 @@
     android:layout_height="match_parent"
     tools:context=".MyActivity">
 
-        <com.google.android.gms.ads.AdView android:id="@+id/adView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            ads:adSize="BANNER"
-            ads:adUnitId="ca-app-pub-6024431417737307/8137424078"/>
+
 
     <ImageView
         android:id="@+id/album_bg"
@@ -20,7 +16,7 @@
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="70dp"
-        android:layout_below="@id/adView">
+        >
 
         <ImageButton
             android:background="@null"
@@ -67,12 +63,17 @@
             />
 
     </RelativeLayout>
-
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        ads:adSize="BANNER"
+        ads:adUnitId="ca-app-pub-6024431417737307/8137424078"/>
     <ImageButton
         android:id="@+id/previous_track"
         android:background="@null"
-        android:layout_margin="@dimen/activity_vertical_margin"
-        android:layout_alignParentBottom="true"
+        android:layout_above="@id/adView"
         android:layout_alignParentLeft="true"
         android:layout_width="100dp"
         android:layout_height="100dp"
@@ -84,29 +85,28 @@
     <ImageButton
         android:id="@+id/play_btn"
         android:background="@null"
-        android:layout_margin="@dimen/activity_vertical_margin"
         android:layout_width="130dp"
         android:layout_height="100dp"
         android:src="@drawable/play"
         android:scaleType="fitCenter"
         android:adjustViewBounds="true"
-        android:layout_alignParentBottom="true"
+        android:layout_above="@id/adView"
         android:layout_centerHorizontal="true"
         android:onClick="playFile"
         />
     <ImageButton
         android:id="@+id/next_track"
         android:background="@null"
-        android:layout_alignParentBottom="true"
+        android:layout_above="@id/adView"
         android:layout_alignParentRight="true"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:src="@drawable/next_track"
         android:scaleType="fitCenter"
         android:adjustViewBounds="true"
-        android:layout_margin="@dimen/activity_vertical_margin"
         android:onClick="nextSong"
         />
+
 
     <ImageView
         android:id="@+id/track_progress"
@@ -142,5 +142,6 @@
         android:textIsSelectable="true"
         android:textSize="40sp"
         android:textColor="#7cb1b1b1"/>
+
 
 </RelativeLayout>

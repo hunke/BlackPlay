@@ -13,15 +13,7 @@
     android:layout_width="fill_parent"
     android:layout_height="60dp"
     >
-<Button
-    android:id="@+id/back_to_main"
-    android:layout_width="60dp"
-    android:layout_height="60dp"
-    android:background="@null"
-    android:text="@string/to_play_list"
-    android:textSize="26sp"
-    android:onClick="backToMain"
-    />
+
 <ImageButton android:id="@+id/flat"
     android:background="@null"
      android:layout_height="fill_parent"
@@ -37,8 +29,8 @@
         android:layout_marginTop="10dp"
         android:layout_width="55dp"
         android:layout_height="40dp"
-        android:layout_toLeftOf="@id/flat"
         android:textColor="#fff"
+        android:textSize="28sp"
         android:background="@null"
         android:textOn="@string/eq_on"
         android:textOff="@string/eq_off"
