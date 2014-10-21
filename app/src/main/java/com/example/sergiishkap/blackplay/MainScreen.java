@@ -261,6 +261,7 @@ public class MainScreen extends Activity implements Observer{
                 Drawable rightArrow = new BitmapDrawable(getResources(),bitmap);
                 rightArrow.setAlpha(100);
                 bgImg.setImageDrawable(rightArrow);
+                bgImg.setScaleType(ImageView.ScaleType.FIT_XY);
             }
             else{
                 setDefaultAlbumImage();
