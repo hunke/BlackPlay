@@ -99,7 +99,7 @@ public class MainScreen extends Activity implements Observer{
                 nextTrack();
                 break;
             case Constants.ON_CALL:
-                forcePause();
+                pauseOnCall();
                 break;
             case Constants.CALL_FINISHED:
                 forceResume();
@@ -152,6 +152,11 @@ public class MainScreen extends Activity implements Observer{
     public void forcePause(){
         Intent service = new Intent(MainScreen.this,PlayerService.class);
         service.putExtra(Constants.ACTION,Constants.HEADPHONES_UNPLUGGED);
+        startService(service);
+    }
+    public void pauseOnCall(){
+        Intent service = new Intent(MainScreen.this,PlayerService.class);
+        service.putExtra(Constants.ACTION,Constants.ON_CALL);
         startService(service);
     }
 
