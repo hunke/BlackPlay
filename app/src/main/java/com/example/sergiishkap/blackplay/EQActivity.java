@@ -2,6 +2,7 @@ package com.example.sergiishkap.blackplay;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.media.audiofx.BassBoost;
 import android.media.audiofx.Equalizer;
@@ -22,7 +23,7 @@ public class EQActivity extends Activity implements SeekBar.OnSeekBarChangeListe
     SeekBar bass_boost = null;
     ToggleButton enabled = null;
     ImageButton flat = null;
-
+    SharedPreferences sharedPreferences;
     Equalizer eq = null;
     BassBoost bb = null;
 
@@ -37,7 +38,9 @@ public class EQActivity extends Activity implements SeekBar.OnSeekBarChangeListe
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
+        sharedPreferences=getSharedPreferences(Constants.PLAYERPREF,MODE_PRIVATE);
         super.onCreate(savedInstanceState);
+
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.eq_layout);
         playerServiceHandler.setScreenOn(true);
@@ -100,10 +103,38 @@ public class EQActivity extends Activity implements SeekBar.OnSeekBarChangeListe
             bass_boost.setVisibility(View.GONE);
             bass_boost_label.setVisibility(View.GONE);
         }
-
         updateUI();
+        setEqFromPref();
     }
-
+    public void setEqFromPref(){
+        if(sharedPreferences!=null&&sharedPreferences.contains(Constants.EQ_BB_PREF)){
+            bass_boost.setProgress(sharedPreferences.getInt(Constants.EQ_BB_PREF,0));
+        }
+        if(sharedPreferences!=null&&sharedPreferences.contains(Constants.EQ_1stLine)){
+            sliders[0].setProgress(sharedPreferences.getInt(Constants.EQ_1stLine,50));
+        }
+        if(sharedPreferences!=null&&sharedPreferences.contains(Constants.EQ_2ndLine)){
+            sliders[1].setProgress(sharedPreferences.getInt(Constants.EQ_2ndLine,50));
+        }
+        if(sharedPreferences!=null&&sharedPreferences.contains(Constants.EQ_3dLine)){
+            sliders[2].setProgress(sharedPreferences.getInt(Constants.EQ_3dLine,50));
+        }
+        if(sharedPreferences!=null&&sharedPreferences.contains(Constants.EQ_4thLine)){
+            sliders[3].setProgress(sharedPreferences.getInt(Constants.EQ_4thLine,50));
+        }
+        if(sharedPreferences!=null&&sharedPreferences.contains(Constants.EQ_5thLine)){
+            sliders[4].setProgress(sharedPreferences.getInt(Constants.EQ_5thLine,50));
+        }
+        if(sharedPreferences!=null&&sharedPreferences.contains(Constants.EQ_6thLine)){
+            sliders[5].setProgress(sharedPreferences.getInt(Constants.EQ_6thLine,50));
+        }
+        if(sharedPreferences!=null&&sharedPreferences.contains(Constants.EQ_7thLine)){
+            sliders[6].setProgress(sharedPreferences.getInt(Constants.EQ_7thLine,50));
+        }
+        if(sharedPreferences!=null&&sharedPreferences.contains(Constants.EQ_8thLine)){
+            sliders[7].setProgress(sharedPreferences.getInt(Constants.EQ_8thLine,50));
+        }
+    }
     /*=============================================================================
         onProgressChanged
     =============================================================================*/
@@ -146,7 +177,40 @@ public class EQActivity extends Activity implements SeekBar.OnSeekBarChangeListe
         } else {
             playerServiceHandler.setScreenOn(true);
         }
+        saveEqState();
         super.onPause();
+    }
+
+    public void saveEqState(){
+        SharedPreferences.Editor editor= getSharedPreferences(Constants.PLAYERPREF, MODE_PRIVATE).edit();
+        if(sliders[0]!=null){
+            editor.putInt(Constants.EQ_1stLine,sliders[0].getProgress());
+        }
+        if(sliders[1]!=null){
+            editor.putInt(Constants.EQ_2ndLine,sliders[1].getProgress());
+        }
+        if(bass_boost!=null){
+            editor.putInt(Constants.EQ_BB_PREF,bass_boost.getProgress());
+        }
+        if(sliders[2]!=null){
+            editor.putInt(Constants.EQ_3dLine,sliders[2].getProgress());
+        }
+        if(sliders[3]!=null){
+            editor.putInt(Constants.EQ_4thLine,sliders[3].getProgress());
+        }
+        if(sliders[4]!=null){
+            editor.putInt(Constants.EQ_5thLine,sliders[4].getProgress());
+        }
+        if(sliders[5]!=null){
+            editor.putInt(Constants.EQ_6thLine,sliders[5].getProgress());
+        }
+        if(sliders[6]!=null){
+            editor.putInt(Constants.EQ_7thLine,sliders[6].getProgress());
+        }
+        if(sliders[7]!=null){
+            editor.putInt(Constants.EQ_8thLine,sliders[7].getProgress());
+        }
+        editor.commit();
     }
     @Override
     protected void onResume() {

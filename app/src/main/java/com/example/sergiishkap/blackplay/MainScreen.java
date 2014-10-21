@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -36,11 +37,18 @@ public class MainScreen extends Activity implements Observer{
     PlayerServiceHandler playerServiceHandler = PlayerServiceHandler.getInstance();
     Intent intent;
     private AdView adView;
+    SharedPreferences sharedpreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        sharedpreferences=getSharedPreferences(Constants.PLAYERPREF,MODE_PRIVATE);
+        if(sharedpreferences!=null&&sharedpreferences.contains(Constants.REPEAT_PREF)){
+            playerServiceHandler.setIsRepeatOn(sharedpreferences.getBoolean(Constants.REPEAT_PREF,true));
+        }
+        if(sharedpreferences!=null&&sharedpreferences.contains(Constants.SHUFFLE_PREF)){
+            playerServiceHandler.setIsShuffleOn(sharedpreferences.getBoolean(Constants.SHUFFLE_PREF, false));
+        }
         final TelephonyManager tm =(TelephonyManager)getBaseContext().getSystemService(Context.TELEPHONY_SERVICE);
-
         String deviceId = tm.getDeviceId();
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -134,11 +142,22 @@ public class MainScreen extends Activity implements Observer{
         }
     }
     @Override
+    protected void onStop(){
+        savePreferences();
+        super.onStop();
+    }
+    @Override
     public void onDestroy() {
         if (adView != null) {
             adView.destroy();
         }
         super.onDestroy();
+    }
+    public void savePreferences(){
+        SharedPreferences.Editor editor= getSharedPreferences(Constants.PLAYERPREF, MODE_PRIVATE).edit();
+        editor.putBoolean(Constants.REPEAT_PREF,playerServiceHandler.isIsRepeatOn());
+        editor.putBoolean(Constants.SHUFFLE_PREF,playerServiceHandler.isIsShuffleOn());
+        editor.commit();
     }
     public void forceResume(){
         Intent service=new Intent(MainScreen.this,PlayerService.class);

@@ -24,5 +24,17 @@ public class Constants {
     public static final int HEADPHONES_PLUGGED=31;
     public static final int ON_CALL=40;
     public static final int CALL_FINISHED=41;
+    public static final String REPEAT_PREF = "repeatKey";
+    public static final String SHUFFLE_PREF = "shuffleKey";
+    public static final String PLAYERPREF= "MyPrefs";
+    public static final String EQ_BB_PREF="BBPref";
+    public static final String EQ_1stLine="Eq1Pref";
+    public static final String EQ_2ndLine="Eq2Pref";
+    public static final String EQ_3dLine="Eq3Pref";
+    public static final String EQ_4thLine="Eq4Pref";
+    public static final String EQ_5thLine="Eq5Pref";
+    public static final String EQ_6thLine="Eq6Pref";
+    public static final String EQ_7thLine="Eq7Pref";
+    public static final String EQ_8thLine="Eq8Pref";
 
 }
