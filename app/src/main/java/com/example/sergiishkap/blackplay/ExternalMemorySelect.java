@@ -21,6 +21,8 @@ public class ExternalMemorySelect extends ListActivity {
     final static String FILTER_FLAC = "flac";
     final static String FILTER_3GP= "3gp";
     final static String FILTER_WAV= "wav";
+    final static String FILTER_OGG= "ogg";
+    final static String FILTER_AAC= "aac";
     static File rootDir = new File(path);
 
     @Override
@@ -73,7 +75,7 @@ public class ExternalMemorySelect extends ListActivity {
             System.out.println("Folder is empty");
         }else{
             for(File file:files){
-                if(file.getName().endsWith(FILTER)||file.getName().endsWith(FILTER_FLAC)||file.getName().endsWith(FILTER_3GP)||file.getName().endsWith(FILTER_WAV)){
+                if(file.getName().endsWith(FILTER)||file.getName().endsWith(FILTER_FLAC)||file.getName().endsWith(FILTER_3GP)||file.getName().endsWith(FILTER_WAV)||file.getName().endsWith(FILTER_OGG)||file.getName().endsWith(FILTER_AAC)){
                     HashMap<String,String> filesWithPath = new HashMap<String,String>();
                     filesWithPath.put("fileName",file.getName());
                     filesWithPath.put("path",parentDir.toString());

@@ -38,11 +38,12 @@
 
 </RelativeLayout>
 
-<TextView  
+<ImageView
     android:id="@+id/bass_boost_label"
-    android:layout_width="fill_parent" 
+    android:layout_width="60dp"
     android:layout_height="wrap_content" 
-    android:text="bass Boost"
+    android:src="@drawable/bass_img"
+    android:adjustViewBounds="true"
     />
 <SeekBar android:id="@+id/bass_boost"
         android:layout_width="fill_parent"

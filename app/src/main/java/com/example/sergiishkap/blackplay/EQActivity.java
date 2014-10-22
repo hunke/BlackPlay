@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -19,7 +20,7 @@ public class EQActivity extends Activity implements SeekBar.OnSeekBarChangeListe
         CompoundButton.OnCheckedChangeListener,
         View.OnClickListener {
     PlayerServiceHandler playerServiceHandler = PlayerServiceHandler.getInstance();
-    TextView bass_boost_label = null;
+    ImageView bass_boost_label = null;
     SeekBar bass_boost = null;
     ToggleButton enabled = null;
     ImageButton flat = null;
@@ -53,7 +54,7 @@ public class EQActivity extends Activity implements SeekBar.OnSeekBarChangeListe
 
         bass_boost = (SeekBar)findViewById(R.id.bass_boost);
         bass_boost.setOnSeekBarChangeListener(this);
-        bass_boost_label = (TextView) findViewById (R.id.bass_boost_label);
+        bass_boost_label=(ImageView) findViewById (R.id.bass_boost_label);
 
         sliders[0] = (SeekBar)findViewById(R.id.slider_1);
         slider_labels[0] = (TextView)findViewById(R.id.slider_label_1);
