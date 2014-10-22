@@ -75,17 +75,21 @@ public class ExternalMemorySelect extends ListActivity {
             System.out.println("Folder is empty");
         }else{
             for(File file:files){
-                if(file.getName().endsWith(FILTER)||file.getName().endsWith(FILTER_FLAC)||file.getName().endsWith(FILTER_3GP)||file.getName().endsWith(FILTER_WAV)||file.getName().endsWith(FILTER_OGG)||file.getName().endsWith(FILTER_AAC)){
+                String fileName=file.getName().toLowerCase();
+                if(file.getName().endsWith(FILTER)||file.getName().toLowerCase().endsWith(FILTER_FLAC)||file.getName().toLowerCase().endsWith(FILTER_3GP)||file.getName().toLowerCase().endsWith(FILTER_WAV)||file.getName().toLowerCase().endsWith(FILTER_OGG)||file.getName().endsWith(FILTER_AAC)){
                     HashMap<String,String> filesWithPath = new HashMap<String,String>();
                     filesWithPath.put("fileName",file.getName());
                     filesWithPath.put("path",parentDir.toString());
                     list.add(filesWithPath);
-                    System.out.println(list.toString());
                 }
                 else if(file.isDirectory()){
-                    String subPath=path+"/"+file.getName();
+                    String subPath=parentDir.getAbsolutePath()+"/"+file.getName();
                     File subFilePath = new File(subPath);
                     fillPlayList(subFilePath);
+                }
+
+                else if("ringtones".equals(fileName)&&file.isDirectory()||"testdata".equals(fileName)&&file.isDirectory()){
+
                 }
             }
         }
