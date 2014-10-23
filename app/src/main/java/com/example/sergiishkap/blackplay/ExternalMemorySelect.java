@@ -40,6 +40,9 @@ public class ExternalMemorySelect extends ListActivity {
         );
         setListAdapter(adapter);
         ListView listView = getListView();
+        if(playerServiceHandler.getSongIndex()!=Constants.NO_SONG_SELECTED){
+            listView.setSelectionFromTop(playerServiceHandler.getSongIndex(),listView.getTop());
+        }
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
@@ -82,15 +85,16 @@ public class ExternalMemorySelect extends ListActivity {
                     filesWithPath.put("path",parentDir.toString());
                     list.add(filesWithPath);
                 }
+                else if("android".equals(fileName)&&file.isDirectory()||"ringtones".equals(fileName)&&file.isDirectory()){
+
+                }
                 else if(file.isDirectory()){
                     String subPath=parentDir.getAbsolutePath()+"/"+file.getName();
                     File subFilePath = new File(subPath);
                     fillPlayList(subFilePath);
                 }
 
-                else if("ringtones".equals(fileName)&&file.isDirectory()||"testdata".equals(fileName)&&file.isDirectory()){
 
-                }
             }
         }
     }
