@@ -15,7 +15,7 @@
         android:textStyle="bold"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:src="@drawable/logo_combo"
+        android:src="@drawable/no_music"
         android:scaleType="fitXY"/>
 
 </LinearLayout>
