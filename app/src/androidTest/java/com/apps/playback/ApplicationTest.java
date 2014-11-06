@@ -1,4 +1,4 @@
-package com.example.sergiishkap.blackplay;
+package com.apps.playback;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

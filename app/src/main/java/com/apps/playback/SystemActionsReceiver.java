@@ -1,4 +1,4 @@
-package com.example.sergiishkap.blackplay;
+package com.apps.playback;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

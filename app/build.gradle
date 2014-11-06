@@ -5,9 +5,9 @@ android {
     buildToolsVersion "20.0.0"
 
     defaultConfig {
-        applicationId "com.example.sergiishkap.blackplay"
+        applicationId "com.apps.playback"
         minSdkVersion 11
-        targetSdkVersion 15
+        targetSdkVersion 20
         versionCode 1
         versionName "1.0"
     }
@@ -21,5 +21,5 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.google.android.gms:play-services:5.+'
+    compile 'com.google.android.gms:play-services:6.1.11'
 }

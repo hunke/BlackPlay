@@ -1,4 +1,4 @@
-package com.example.sergiishkap.blackplay;
+package com.apps.playback;
 
 public class Constants {
     public static final int NEXT_SONG=4;

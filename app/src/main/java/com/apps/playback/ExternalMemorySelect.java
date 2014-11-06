@@ -1,4 +1,4 @@
-package com.example.sergiishkap.blackplay;
+package com.apps.playback;
 
 import android.app.ListActivity;
 import android.content.Intent;

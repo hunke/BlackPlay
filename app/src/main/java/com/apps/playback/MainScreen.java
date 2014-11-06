@@ -1,4 +1,4 @@
-package com.example.sergiishkap.blackplay;
+package com.apps.playback;
 
 
 import android.app.Activity;
@@ -10,7 +10,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.media.AudioManager;
 import android.media.MediaMetadataRetriever;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
@@ -19,11 +18,9 @@ import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.content.Intent;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 
 import java.util.Observable;

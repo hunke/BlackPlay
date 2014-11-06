@@ -1,4 +1,4 @@
-package com.example.sergiishkap.blackplay;
+package com.apps.playback;
 
 import android.content.Context;
 import android.database.ContentObserver;
