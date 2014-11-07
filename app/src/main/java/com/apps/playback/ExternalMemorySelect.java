@@ -19,7 +19,6 @@ public class ExternalMemorySelect extends ListActivity {
     PlayerServiceHandler playerServiceHandler = PlayerServiceHandler.getInstance();
     final static String FILTER = "mp3";
     final static String FILTER_FLAC = "flac";
-    final static String FILTER_3GP= "3gp";
     final static String FILTER_WAV= "wav";
     final static String FILTER_OGG= "ogg";
     final static String FILTER_AAC= "aac";
@@ -79,7 +78,7 @@ public class ExternalMemorySelect extends ListActivity {
         }else{
             for(File file:files){
                 String fileName=file.getName().toLowerCase();
-                if(file.getName().endsWith(FILTER)||file.getName().toLowerCase().endsWith(FILTER_FLAC)||file.getName().toLowerCase().endsWith(FILTER_3GP)||file.getName().toLowerCase().endsWith(FILTER_WAV)||file.getName().toLowerCase().endsWith(FILTER_OGG)||file.getName().endsWith(FILTER_AAC)){
+                if(file.getName().endsWith(FILTER)||file.getName().toLowerCase().endsWith(FILTER_FLAC)||file.getName().toLowerCase().endsWith(FILTER_WAV)||file.getName().toLowerCase().endsWith(FILTER_OGG)||file.getName().endsWith(FILTER_AAC)){
                     HashMap<String,String> filesWithPath = new HashMap<String,String>();
                     filesWithPath.put("fileName",file.getName());
                     filesWithPath.put("path",parentDir.toString());
