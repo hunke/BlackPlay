@@ -84,7 +84,7 @@ public class ExternalMemorySelect extends ListActivity {
                     filesWithPath.put("path",parentDir.toString());
                     list.add(filesWithPath);
                 }
-                else if("android".equals(fileName)&&file.isDirectory()||"ringtones".equals(fileName)&&file.isDirectory()){
+                else if(("android".equals(fileName.toLowerCase())&&file.isDirectory())||("ringtones".equals(fileName.toLowerCase())&&file.isDirectory())||("notifications".equals(fileName.toLowerCase())&&file.isDirectory())){
 
                 }
                 else if(file.isDirectory()){
